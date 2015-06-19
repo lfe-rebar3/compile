@@ -17,7 +17,7 @@ Build
 Use
 ---
 
-Add the plugin to your rebar config:
+Add the plugin to your ``rebar.config``:
 
 ```erlang
     {plugins, [
