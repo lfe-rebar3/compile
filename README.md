@@ -21,8 +21,9 @@ Add the plugin to your ``rebar.config``:
 
 ```erlang
 {plugins, [
-  {'lfe-compile',
-    {git, "https://github.com/oubiwann/rebar3-lfe-compile.git"}}
+  {'lfe-compile', ".*",
+    {git, "https://github.com/oubiwann/rebar3-lfe-compile.git",
+      {branch, "master"}}}
 ]}.
 ```
 
