@@ -33,7 +33,7 @@ init(State) ->
 
 -spec do(rebar_state:t()) -> {ok, rebar_state:t()} | {error, string()}.
 do(State) ->
-    Cwd = rebar_utils:get_cwd(),
+    {ok, Cwd} = file:get_cwd(),
     FirstFiles = check_files(rebar_state:get(State, lfe_first_files, [])),
     Result = rebar_base_compiler:run(State,
                                      FirstFiles,
