@@ -19,10 +19,13 @@ Use
 
 Add the plugin to your rebar config:
 
+```erlang
     {plugins, [
-        {'lfe-compile', ".*", {git, "https://github.com/oubiwann/lfe-compile.git", {tag, "0.1.0"}}}
+    {'lfe-compile', ".*",
+      {git, "https://github.com/oubiwann/lfe-compile.git", {tag, "0.1.0"}}}
     ]}.
-
+```
+    
 Then just call your plugin directly in an existing application:
 
 ```bash
