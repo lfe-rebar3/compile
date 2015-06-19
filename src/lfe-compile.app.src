@@ -1,5 +1,5 @@
 {application, 'lfe-compile',
- [{description, "A rebar plugin"},
+ [{description, "The LFE rebar3 compiler plugin"},
   {vsn, "0.1.0"},
   {registered, []},
   {applications,
