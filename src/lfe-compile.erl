@@ -7,8 +7,6 @@
 
 -export([init/1, do/1, format_error/1]).
 
--include_lib("rebar3/src/rebar.hrl").
-
 -define(PROVIDER, compile).
 -define(DEPS, [{default, compile},
                {default, app_discovery}]).
@@ -65,9 +63,9 @@ info(Description) ->
 compile_lfe(Source, _Target, State) ->
     case code:which(lfe_comp) of
         non_existing ->
-            ?ERROR("~n"
-                   "*** MISSING LFE COMPILER ***~n"
-                   "~n", []),
+            rebar_log:log("~n"
+                          "*** MISSING LFE COMPILER ***~n"
+                          "~n", []),
             ?FAIL;
         _ ->
             ErlOpts = rebar_utils:erl_opts(State),
@@ -79,7 +77,7 @@ compile_lfe(Source, _Target, State) ->
                     rebar_base_compiler:error_tuple(State, Source,
                                                     Es, Ws, Opts);
                 _ ->
-                    ?FAIL
+                    rebar_utils:abort()
             end
     end.
 
@@ -92,6 +90,6 @@ check_files(FileList) ->
 
 check_file(File) ->
     case filelib:is_regular(File) of
-        false -> ?ABORT("File ~p is missing, aborting\n", [File]);
+        false -> rebar_utils:abort("File ~p is missing, aborting\n", [File]);
         true -> File
     end.
