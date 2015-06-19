@@ -8,6 +8,7 @@
 -export([init/1, do/1, format_error/1]).
 
 -define(PROVIDER, compile).
+-define(DESC, "The LFE rebar3 compiler plugin").
 -define(DEPS, [{default, compile},
                {default, app_discovery}]).
 
@@ -23,8 +24,8 @@ init(State) ->
             {bare, true},
             {deps, ?DEPS},
             {example, "rebar3 lfe compile"},
-            {short_desc, "rebar3 compile for LFE"},
-            {desc, "The LFE rebar3 compiler plugin"},
+            {short_desc, ?DESC},
+            {desc, info(?DESC)},
             {opts, []}
     ]),
     {ok, rebar_state:add_provider(State, Provider)}.
@@ -66,7 +67,7 @@ compile_lfe(Source, _Target, State) ->
             rebar_log:log("~n"
                           "*** MISSING LFE COMPILER ***~n"
                           "~n", []),
-            ?FAIL;
+            rebar_utils:abort();
         _ ->
             ErlOpts = rebar_utils:erl_opts(State),
             Opts = [{i, "include"}, {outdir, "ebin"}, return] ++ ErlOpts,
