@@ -58,7 +58,7 @@ info(Description) ->
         "No additional configuration options are required to compile~n"
         "LFE (*.lfe) files. The rebar 'erl_opts' setting is reused by~n"
         "LFE. For more information, see the rebar documentation for~n"
-        "'erl_opts'.",
+        "'erl_opts'.~n",
         [Description]).
 
 compile_lfe(Source, _Target, State) ->

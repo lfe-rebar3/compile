@@ -20,17 +20,21 @@ Use
 Add the plugin to your ``rebar.config``:
 
 ```erlang
-    {plugins, [
-    {'lfe-compile', ".*",
-      {git, "https://github.com/oubiwann/lfe-compile.git", {tag, "0.1.0"}}}
-    ]}.
+{plugins, [
+  {'lfe-compile',
+    {git, "https://github.com/oubiwann/rebar3-lfe-compile.git"}}
+]}.
 ```
-    
+
 Then just call your plugin directly in an existing application:
 
+
 ```bash
-    $ rebar3 lfe compile
-    ===> Fetching lfe-compile
-    ===> Compiling lfe-compile
-    <Plugin Output>
+$ rebar3 help lfe compile
+...
+```
+
+```bash
+$ rebar3 lfe compile
+...
 ```
