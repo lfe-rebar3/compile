@@ -27,8 +27,7 @@ Add the plugin to your ``rebar.config``:
 ]}.
 ```
 
-Then just call your plugin directly in an existing application:
-
+Then just call your plugin directly from your project directory:
 
 ```bash
 $ rebar3 help lfe compile
