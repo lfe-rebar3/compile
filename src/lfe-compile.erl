@@ -1,3 +1,7 @@
+%% Copyright (c) 2009, Dave Smith <dizzyd@dizzyd.com> &
+%%                     Tim Dysinger <tim@dysinger.net>
+%% Copyright (c) 2014, 2015 Duncan McGreggor <oubiwann@gmail.com>
+%% 
 -module('lfe-compile').
 -behaviour(provider).
 
@@ -15,15 +19,15 @@
 -spec init(rebar_state:t()) -> {ok, rebar_state:t()}.
 init(State) ->
     Provider = providers:create([
-            {name, compile},              % The 'user friendly' name of the task
-            {module, ?MODULE},            % The module implementation of the task
+            {name, compile},
+            {module, ?MODULE},
             {namespace, lfe},
-            {bare, true},                 % The task can be run by the user, always true
-            {deps, ?DEPS},                % The list of dependencies
-            {example, "rebar3 lfe compile"}, % How to use the plugin
-            {short_desc, "rebar compile for LFE"},
-            {desc, "The LFE compile rebar plugin"},
-            {opts, []}                    % list of options understood by the plugin
+            {bare, true},
+            {deps, ?DEPS},
+            {example, "rebar3 lfe compile"},
+            {short_desc, "rebar3 compile for LFE"},
+            {desc, "The LFE rebar3 compiler plugin"},
+            {opts, []}
     ]),
     {ok, rebar_state:add_provider(State, Provider)}.
 
