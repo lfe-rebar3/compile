@@ -1,12 +1,18 @@
 lfe-compile
 =====
 
-A rebar plugin
+*The LFE rebar3 compiler plugin*
+
+<img src="resources/images/logo.png" />
+
 
 Build
 -----
 
+```bash
     $ rebar3 compile
+```
+
 
 Use
 ---
@@ -19,8 +25,9 @@ Add the plugin to your rebar config:
 
 Then just call your plugin directly in an existing application:
 
-
-    $ rebar3 lfe-compile
+```bash
+    $ rebar3 lfe compile
     ===> Fetching lfe-compile
     ===> Compiling lfe-compile
     <Plugin Output>
+```
