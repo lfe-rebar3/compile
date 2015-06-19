@@ -13,8 +13,6 @@
          lfe_compile/2,
          lfe_compile/3]).
 
--include_lib("providers/include/providers.hrl").
-
 -define(PROVIDER, compile).
 -define(DESC, "The LFE rebar3 compiler plugin").
 -define(DEPS, [{default, compile},
@@ -134,7 +132,8 @@ info(Description) ->
 has_all_artifacts(State) ->
     case rebar_state:has_all_artifacts(State) of
         {false, File} ->
-            throw(?PRV_ERROR({missing_artifact, File}));
+            Reason = {missing_artifact, File},
+            throw({error, {?MODULE, Reason}});
         true ->
             true
     end.
