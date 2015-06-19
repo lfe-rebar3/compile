@@ -7,6 +7,8 @@
 
 -export([init/1, do/1, format_error/1]).
 
+-include("rebar.hrl").
+
 -define(PROVIDER, compile).
 -define(DEPS, [{default, compile},
                {default, app_discovery}]).
