@@ -74,9 +74,9 @@ format_error(Reason) ->
     io_lib:format("~p", [Reason]).
 
 compile(State, AppInfo) ->
-    rebar_api:info("Compiling ~s", [rebar_app_info:name(AppInfo)]),
     AppDir = rebar_app_info:dir(AppInfo),
     OutDir = rebar_app_info:out_dir(AppInfo),
+    rebar_api:debug("Calculated outdir: ~p", [OutDir]), %% XXX DEBUG
     lfe_compile(State, AppDir, OutDir).
 
 -spec lfe_compile(rebar_state:t(), file:name(), file:name()) -> 'ok'.
@@ -97,11 +97,11 @@ info(Description) ->
         [Description]).
 
 -spec dotlfe_compile(rebar_state:t(), file:filename(), file:filename()) -> ok.
-dotlfe_compile(State, Dir, ODir) ->
+dotlfe_compile(State, Dir, OutDir) ->
     rebar_api:debug("Starting dotlfe_compile/3 ...", []), %% XXX DEBUG
     ErlOpts = rebar_utils:erl_opts(State),
     LfeFirstFiles = check_files(rebar_state:get(State, lfe_first_files, [])),
-    dotlfe_compile(State, Dir, ODir, [], ErlOpts, LfeFirstFiles).
+    dotlfe_compile(State, Dir, OutDir, [], ErlOpts, LfeFirstFiles).
 
 dotlfe_compile(State, Dir, OutDir, MoreSources, ErlOpts, LfeFirstFiles) ->
     rebar_api:debug("Starting dotlfe_compile/6 ...", []), %% XXX DEBUG
@@ -151,7 +151,7 @@ target_base(OutDir, Source) ->
     file:filename(), list()) -> ok | {ok, any()} | {error, any(), any()}.
 internal_lfe_compile(Config, Dir, Module, OutDir, ErlOpts) ->
     Target = target_base(OutDir, Module) ++ ".beam",
-    rebar_api:debug("Compiling ~p to ~p ...", [Module, Target]),
+    rebar_api:debug("Compiling ~p~n~tto ~p ...", [Module, Target]),
     ok = filelib:ensure_dir(Target),
     Opts = [{outdir, filename:dirname(Target)}] ++ ErlOpts ++
         [{i, filename:join(Dir, "include")}, return],
