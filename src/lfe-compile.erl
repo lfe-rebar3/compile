@@ -52,6 +52,7 @@ init(State) ->
 
 -spec do(rebar_state:t()) -> {ok, rebar_state:t()} | {error, string()}.
 do(State) ->
+    rebar_log:log(debug, "Started 'do' ..."), %% XXX DEBUG
     DepsPaths = rebar_state:code_paths(State, all_deps),
     PluginDepsPaths = rebar_state:code_paths(State, all_plugin_deps),
     rebar_utils:remove_from_code_path(PluginDepsPaths),
@@ -72,7 +73,8 @@ do(State) ->
     {ok, ProjectApps1} = rebar_digraph:compile_order(ProjectApps),
 
     %% Run top level hooks *before* project apps compiled but *after* deps are
-    rebar_hooks:run_all_hooks(Cwd, pre, ?PROVIDER, Providers, State),
+    rebar_log:log(debug, "Preparing to run pre hooks ..."), %% XXX DEBUG
+    rebar_hooks:run_provider_hooks(Cwd, pre, ?PROVIDER, Providers, State),
 
     ProjectApps2 = build_apps(State, Providers, ProjectApps1),
     State2 = rebar_state:project_apps(State, ProjectApps2),
@@ -80,7 +82,8 @@ do(State) ->
     ProjAppsPaths = [filename:join(rebar_app_info:out_dir(X), "ebin") || X <- ProjectApps2],
     State3 = rebar_state:code_paths(State2, all_deps, DepsPaths ++ ProjAppsPaths),
 
-    rebar_hooks:run_all_hooks(Cwd, post, ?PROVIDER, Providers, State2),
+    rebar_log:log(debug, "Preparing to run post hooks ..."), %% XXX DEBUG
+    rebar_hooks:run_provider_hooks(Cwd, post, ?PROVIDER, Providers, State2),
     has_all_artifacts(State3),
 
     rebar_utils:cleanup_code_path(rebar_state:code_paths(State3, default)),
