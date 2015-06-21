@@ -57,7 +57,9 @@ init(State) ->
 do(State) ->
     rebar_log:log(debug, "Starting do/1 for {lfe, compile} ...", []), %% XXX DEBUG
     DepsPaths = rebar_state:code_paths(State, all_deps),
+    rebar_log:log(debug, "DepsPaths ~p", [DepsPaths]), %% XXX DEBUG
     PluginDepsPaths = rebar_state:code_paths(State, all_plugin_deps),
+    rebar_log:log(debug, "PluginDepsPaths ~p", [PluginDepsPaths]), %% XXX DEBUG
     rebar_utils:remove_from_code_path(PluginDepsPaths),
     code:add_pathsa(DepsPaths),
 
@@ -77,20 +79,22 @@ do(State) ->
 
     %% Run top level hooks *before* project apps compiled but *after* deps are
     rebar_log:log(debug, "Preparing to run pre hooks ...", []), %% XXX DEBUG
-    rebar_log:log(debug, "Cwd:  ...", [Cwd]), %% XXX DEBUG
-    rebar_log:log(debug, "PROVIER:  ...", [?PROVIDER]), %% XXX DEBUG
-    rebar_log:log(debug, "Providers:  ...", [Providers]), %% XXX DEBUG
-    rebar_log:log(debug, "State:  ...", [State]), %% XXX DEBUG
-    rebar_hooks:run_provider_hooks(Cwd, pre, ?PROVIDER, Providers, State),
+    rebar_log:log(debug, "Cwd: ~p ", [Cwd]), %% XXX DEBUG
+    rebar_log:log(debug, "PROVIDER: ~p ", [?PROVIDER]), %% XXX DEBUG
+    DebugProv = lists:map(fun (X) -> lists:flatten(io_lib:format("{~p, ~p, ~p ...}", [element(1, X), element(2, X), element(3, X)])) end, Providers),
+    rebar_log:log(debug, "Providers: ~p ", [DebugProv]), %% XXX DEBUG
+    rebar_hooks:run_provider_hooks(Cwd, pre, {lfe, ?PROVIDER}, Providers, State),
 
     ProjectApps2 = build_apps(State, Providers, ProjectApps1),
+    rebar_log:log(debug, "ProjectApps2: ~p ", [ProjectApps2]), %% XXX DEBUG 
     State2 = rebar_state:project_apps(State, ProjectApps2),
 
     ProjAppsPaths = [filename:join(rebar_app_info:out_dir(X), "ebin") || X <- ProjectApps2],
+    rebar_log:log(debug, "ProjAppsPaths: ~p ", [ProjAppsPaths]), %% XXX DEBUG 
     State3 = rebar_state:code_paths(State2, all_deps, DepsPaths ++ ProjAppsPaths),
 
     rebar_log:log(debug, "Preparing to run post hooks ...", []), %% XXX DEBUG
-    rebar_hooks:run_provider_hooks(Cwd, post, ?PROVIDER, Providers, State2),
+    rebar_hooks:run_provider_hooks(Cwd, post, {lfe, ?PROVIDER}, Providers, State2),
     has_all_artifacts(State3),
 
     rebar_utils:cleanup_code_path(rebar_state:code_paths(State3, default)),
@@ -118,7 +122,7 @@ build_app(State, Providers, AppInfo) ->
 compile(State, Providers, AppInfo) ->
     rebar_log:log(info, "Compiling ~s", [rebar_app_info:name(AppInfo)]),
     AppDir = rebar_app_info:dir(AppInfo),
-    rebar_hooks:run_provider_hooks(AppDir, pre, ?PROVIDER,  Providers, State),
+    rebar_hooks:run_provider_hooks(AppDir, pre, {lfe, ?PROVIDER},  Providers, State),
 
     lfe_compile(State, ec_cnv:to_list(rebar_app_info:out_dir(AppInfo))),
     case rebar_otp_app:compile(State, AppInfo) of
