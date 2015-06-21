@@ -9,7 +9,7 @@
          do/1,
          format_error/1]).
 
--export([compile/3,
+-export([compile/2,
          lfe_compile/2,
          lfe_compile/3]).
 
@@ -55,51 +55,75 @@ init(State) ->
 
 -spec do(rebar_state:t()) -> {ok, rebar_state:t()} | {error, string()}.
 do(State) ->
-    rebar_log:log(debug, "Starting do/1 for {lfe, compile} ...", []), %% XXX DEBUG
-    DepsPaths = rebar_state:code_paths(State, all_deps),
-    rebar_log:log(debug, "DepsPaths ~p", [DepsPaths]), %% XXX DEBUG
-    PluginDepsPaths = rebar_state:code_paths(State, all_plugin_deps),
-    rebar_log:log(debug, "PluginDepsPaths ~p", [PluginDepsPaths]), %% XXX DEBUG
-    rebar_utils:remove_from_code_path(PluginDepsPaths),
-    code:add_pathsa(DepsPaths),
+    %% rebar_api:debug("Starting do/1 for {lfe, compile} ...", []), %% XXX DEBUG
+    %% DepsPaths = rebar_state:code_paths(State, all_deps),
+    %% rebar_api:debug("DepsPaths ~p", [DepsPaths]), %% XXX DEBUG
+    %% PluginDepsPaths = rebar_state:code_paths(State, all_plugin_deps),
+    %% rebar_api:debug("PluginDepsPaths ~p", [PluginDepsPaths]), %% XXX DEBUG
+    %% rebar_utils:remove_from_code_path(PluginDepsPaths),
+    %% code:add_pathsa(DepsPaths),
 
-    ProjectApps = rebar_state:project_apps(State),
-    Providers = rebar_state:providers(State),
-    Deps = rebar_state:deps_to_build(State),
-    Cwd = rebar_state:dir(State),
+    %% ProjectApps = rebar_state:project_apps(State),
+    %% Providers = rebar_state:providers(State),
+    %% Deps = rebar_state:deps_to_build(State),
+    %% Cwd = rebar_state:dir(State),
 
-    %% Need to allow global config vars used on deps.
-    %% Right now no way to differeniate and just give deps a new state.
-    %% But need an account of "all deps" for some hooks to use.
-    EmptyState = rebar_state:new(),
-    build_apps(rebar_state:all_deps(EmptyState,
-                                   rebar_state:all_deps(State)), Providers, Deps),
+    %% %% Need to allow global config vars used on deps.
+    %% %% Right now no way to differeniate and just give deps a new state.
+    %% %% But need an account of "all deps" for some hooks to use.
+    %% EmptyState = rebar_state:new(),
+    %% build_apps(rebar_state:all_deps(EmptyState,
+    %%                                rebar_state:all_deps(State)), Providers, Deps),
 
-    {ok, ProjectApps1} = rebar_digraph:compile_order(ProjectApps),
+    %% {ok, ProjectApps1} = rebar_digraph:compile_order(ProjectApps),
 
-    %% Run top level hooks *before* project apps compiled but *after* deps are
-    rebar_log:log(debug, "Preparing to run pre hooks ...", []), %% XXX DEBUG
-    rebar_log:log(debug, "Cwd: ~p ", [Cwd]), %% XXX DEBUG
-    rebar_log:log(debug, "PROVIDER: ~p ", [?PROVIDER]), %% XXX DEBUG
-    DebugProv = lists:map(fun (X) -> lists:flatten(io_lib:format("{~p, ~p, ~p ...}", [element(1, X), element(2, X), element(3, X)])) end, Providers),
-    rebar_log:log(debug, "Providers: ~p ", [DebugProv]), %% XXX DEBUG
-    rebar_hooks:run_provider_hooks(Cwd, pre, {lfe, ?PROVIDER}, Providers, State),
+    %% %% Run top level hooks *before* project apps compiled but *after* deps are
+    %% rebar_api:debug("Preparing to run pre hooks ...", []), %% XXX DEBUG
+    %% rebar_api:debug("Cwd: ~p ", [Cwd]), %% XXX DEBUG
+    %% rebar_api:debug("PROVIDER: ~p ", [?PROVIDER]), %% XXX DEBUG
+    %% DebugProv = lists:map(fun (X) -> lists:flatten(io_lib:format("{~p, ~p, ~p ...}", [element(1, X), element(2, X), element(3, X)])) end, Providers),
+    %% rebar_api:debug("Providers: ~p ", [DebugProv]), %% XXX DEBUG
+    %% rebar_hooks:run_provider_hooks(Cwd, pre, {lfe, ?PROVIDER}, Providers, State),
 
-    ProjectApps2 = build_apps(State, Providers, ProjectApps1),
-    rebar_log:log(debug, "ProjectApps2: ~p ", [ProjectApps2]), %% XXX DEBUG 
-    State2 = rebar_state:project_apps(State, ProjectApps2),
+    %% ProjectApps2 = build_apps(State, Providers, ProjectApps1),
+    %% rebar_api:debug("ProjectApps2: ~p ", [ProjectApps2]), %% XXX DEBUG 
+    %% State2 = rebar_state:project_apps(State, ProjectApps2),
 
-    ProjAppsPaths = [filename:join(rebar_app_info:out_dir(X), "ebin") || X <- ProjectApps2],
-    rebar_log:log(debug, "ProjAppsPaths: ~p ", [ProjAppsPaths]), %% XXX DEBUG 
-    State3 = rebar_state:code_paths(State2, all_deps, DepsPaths ++ ProjAppsPaths),
+    %% ProjAppsPaths = [filename:join(rebar_app_info:out_dir(X), "ebin") || X <- ProjectApps2],
+    %% rebar_api:debug("ProjAppsPaths: ~p ", [ProjAppsPaths]), %% XXX DEBUG 
+    %% State3 = rebar_state:code_paths(State2, all_deps, DepsPaths ++ ProjAppsPaths),
 
-    rebar_log:log(debug, "Preparing to run post hooks ...", []), %% XXX DEBUG
-    rebar_hooks:run_provider_hooks(Cwd, post, {lfe, ?PROVIDER}, Providers, State2),
-    has_all_artifacts(State3),
+    %% rebar_api:debug("Preparing to run post hooks ...", []), %% XXX DEBUG
+    %% rebar_hooks:run_provider_hooks(Cwd, post, {lfe, ?PROVIDER}, Providers, State2),
+    %% has_all_artifacts(State3),
 
-    rebar_utils:cleanup_code_path(rebar_state:code_paths(State3, default)),
+    %% rebar_utils:cleanup_code_path(rebar_state:code_paths(State3, default)),
 
-    {ok, State3}.
+    %% {ok, State3}.
+    rebar_api:debug("Starting do/1 for {lfe, compile} ...", []),
+    case rebar_state:get(State, escript_main_app, undefined) of
+        undefined ->
+            Dir = rebar_state:dir(State),
+            case rebar_app_discover:find_app(Dir, all) of
+                {true, AppInfo} ->
+                    AllApps = rebar_state:project_apps(State) ++ rebar_state:all_deps(State),
+                    case rebar_app_utils:find(rebar_app_info:name(AppInfo), AllApps) of
+                        {ok, AppInfo1} ->
+                            %% Use the existing app info instead of newly created one
+                            compile(State, AppInfo1);
+                        _ ->
+                            compile(State, AppInfo)
+                    end,
+                    {ok, State};
+                _ ->
+                    {error, {?MODULE, no_main_app}}
+            end;
+        Name ->
+            AllApps = rebar_state:project_apps(State) ++ rebar_state:all_deps(State),
+            {ok, App} = rebar_app_utils:find(Name, AllApps),
+            compile(State, App),
+            {ok, State}
+    end.
     
 -spec format_error(any()) -> iolist().
 format_error({missing_artifact, File}) ->
@@ -107,20 +131,26 @@ format_error({missing_artifact, File}) ->
 format_error(Reason) ->
     io_lib:format("~p", [Reason]).
 
-build_apps(State, Providers, Apps) ->
-    [build_app(State, Providers, AppInfo) || AppInfo <- Apps].
+%% build_apps(State, Providers, Apps) ->
+%%     [build_app(State, Providers, AppInfo) || AppInfo <- Apps].
 
-build_app(State, Providers, AppInfo) ->
+%% build_app(State, Providers, AppInfo) ->
+%%     AppDir = rebar_app_info:dir(AppInfo),
+%%     OutDir = rebar_app_info:out_dir(AppInfo),
+%%     copy_app_dirs(State, AppDir, OutDir),
+
+%%     S = rebar_app_info:state_or_new(State, AppInfo),
+%%     S1 = rebar_state:all_deps(S, rebar_state:all_deps(State)),
+%%     compile(S1, Providers, AppInfo).
+
+compile(State, AppInfo) ->
+    rebar_api:info("Compiling ~s", [rebar_app_info:name(AppInfo)]),
     AppDir = rebar_app_info:dir(AppInfo),
     OutDir = rebar_app_info:out_dir(AppInfo),
-    copy_app_dirs(State, AppDir, OutDir),
-
-    S = rebar_app_info:state_or_new(State, AppInfo),
-    S1 = rebar_state:all_deps(S, rebar_state:all_deps(State)),
-    compile(S1, Providers, AppInfo).
-
-compile(State, Providers, AppInfo) ->
-    rebar_log:log(info, "Compiling ~s", [rebar_app_info:name(AppInfo)]),
+    lfe_compile(State, AppDir, OutDir).
+    
+compile_old(State, Providers, AppInfo) ->
+    rebar_api:info("Compiling ~s", [rebar_app_info:name(AppInfo)]),
     AppDir = rebar_app_info:dir(AppInfo),
     rebar_hooks:run_provider_hooks(AppDir, pre, {lfe, ?PROVIDER},  Providers, State),
 
@@ -135,12 +165,12 @@ compile(State, Providers, AppInfo) ->
     end.
 
 -spec lfe_compile(rebar_state:t(), file:name()) -> 'ok'.
-lfe_compile(Config, Dir) ->
-    lfe_compile(Config, Dir, filename:join([Dir, "ebin"])).
+lfe_compile(State, Dir) ->
+    lfe_compile(State, Dir, filename:join([Dir, "ebin"])).
 
 -spec lfe_compile(rebar_state:t(), file:name(), file:name()) -> 'ok'.
-lfe_compile(Config, Dir, OutDir) ->
-    dotlfe_compile(Config, Dir, OutDir).
+lfe_compile(State, Dir, OutDir) ->
+    dotlfe_compile(State, Dir, OutDir).
 
 %% ===================================================================
 %% Internal functions
@@ -194,14 +224,14 @@ symlink_or_copy(OldAppDir, AppDir, Dir) ->
 
 -spec dotlfe_compile(rebar_state:t(), file:filename(), file:filename()) -> ok.
 dotlfe_compile(State, Dir, ODir) ->
-    rebar_log:log(debug, "Starting dotlfe_compile/3 ...", []), %% XXX DEBUG
+    rebar_api:debug("Starting dotlfe_compile/3 ...", []), %% XXX DEBUG
     ErlOpts = rebar_utils:erl_opts(State),
     LfeFirstFiles = check_files(rebar_state:get(State, lfe_first_files, [])),
     dotlfe_compile(State, Dir, ODir, [], ErlOpts, LfeFirstFiles).
 
 dotlfe_compile(Config, Dir, OutDir, MoreSources, ErlOpts, LfeFirstFiles) ->
-    rebar_log:log(debug, "Starting dotlfe_compile/6 ...", []), %% XXX DEBUG
-    rebar_log:log(debug, "erl_opts ~p", [ErlOpts]),
+    rebar_api:debug("Starting dotlfe_compile/6 ...", []), %% XXX DEBUG
+    rebar_api:debug("erl_opts ~p", [ErlOpts]),
     %% Support the src_dirs option allowing multiple directories to
     %% contain erlang source. This might be used, for example, should
     %% eunit tests be separated from the core application source.
@@ -223,7 +253,7 @@ dotlfe_compile(Config, Dir, OutDir, MoreSources, ErlOpts, LfeFirstFiles) ->
                              [File || File <- NeededLfeFiles, not lists:member(File, LfeFirstFiles)]),
     DepLfesOrdered = digraph_utils:topsort(digraph_utils:subgraph(G, DepLfes)),
     FirstLfes = LfeFirstFiles ++ lists:reverse(DepLfesOrdered),
-    rebar_log:log(debug, "Files to compile first: ~p", [FirstLfes]),
+    rebar_api:debug("Files to compile first: ~p", [FirstLfes]),
     rebar_base_compiler:run(
       Config, FirstLfes, OtherLfes,
       fun(S, C) ->
@@ -276,7 +306,7 @@ compile_info(Target) ->
             CompileInfo = proplists:get_value(compile_info, Chunks, []),
             {ok, proplists:get_value(options, CompileInfo, [])};
         {error, beam_lib, Reason} ->
-            rebar_log:log(warn, "Couldn't read debug info from ~p for reason: ~p", [Target, Reason]),
+            rebar_api:warn("Couldn't read debug info from ~p for reason: ~p", [Target, Reason]),
             {error, Reason}
     end.
 
@@ -292,7 +322,7 @@ init_erlcinfo(InclDirs, Erls, Dir) ->
     try restore_erlcinfo(G, InclDirs, Dir)
     catch
         _:_ ->
-            rebar_log:log(warn, "Failed to restore ~s file. Discarding it.~n", [erlcinfo_file(Dir)]),
+            rebar_api:warn("Failed to restore ~s file. Discarding it.~n", [erlcinfo_file(Dir)]),
             file:delete(erlcinfo_file(Dir))
     end,
     Dirs = source_and_include_dirs(InclDirs, Erls),
