@@ -75,7 +75,7 @@ format_error(Reason) ->
 
 compile(State, AppInfo) ->
     AppDir = rebar_app_info:dir(AppInfo),
-    OutDir = rebar_app_info:out_dir(AppInfo),
+    OutDir = filename:join(AppDir, "ebin"),
     rebar_api:debug("Calculated outdir: ~p", [OutDir]), %% XXX DEBUG
     lfe_compile(State, AppDir, OutDir).
 
@@ -151,7 +151,7 @@ target_base(OutDir, Source) ->
     file:filename(), list()) -> ok | {ok, any()} | {error, any(), any()}.
 internal_lfe_compile(Config, Dir, Module, OutDir, ErlOpts) ->
     Target = target_base(OutDir, Module) ++ ".beam",
-    rebar_api:debug("Compiling ~p~n~tto ~p ...", [Module, Target]),
+    rebar_api:debug("Compiling ~p~n\tto ~p ...", [Module, Target]),
     ok = filelib:ensure_dir(Target),
     Opts = [{outdir, filename:dirname(Target)}] ++ ErlOpts ++
         [{i, filename:join(Dir, "include")}, return],
