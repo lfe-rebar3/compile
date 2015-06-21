@@ -36,6 +36,7 @@
 %% ===================================================================
 -spec init(rebar_state:t()) -> {ok, rebar_state:t()}.
 init(State) ->
+    rebar_log:log(debug, "Initializing {lfe, compile} ..."), %% XXX DEBUG
     Provider = providers:create([
             {name, compile},
             {module, ?MODULE},
@@ -47,7 +48,9 @@ init(State) ->
             {desc, info(?DESC)},
             {opts, []}
     ]),
-    {ok, rebar_state:add_provider(State, Provider)}.
+    State1 = rebar_state:add_provider(State, Provider),
+    rebar_log:log(debug, "Initialized {lfe, compile} ..."), %% XXX DEBUG
+    {ok, State1}.
 
 
 -spec do(rebar_state:t()) -> {ok, rebar_state:t()} | {error, string()}.
@@ -183,11 +186,13 @@ symlink_or_copy(OldAppDir, AppDir, Dir) ->
 
 -spec dotlfe_compile(rebar_state:t(), file:filename(), file:filename()) -> ok.
 dotlfe_compile(State, Dir, ODir) ->
+    rebar_log:log(debug, "Starting dotlfe_compile/3 ..."), %% XXX DEBUG
     ErlOpts = rebar_utils:erl_opts(State),
     LfeFirstFiles = check_files(rebar_state:get(State, lfe_first_files, [])),
     dotlfe_compile(State, Dir, ODir, [], ErlOpts, LfeFirstFiles).
 
 dotlfe_compile(Config, Dir, OutDir, MoreSources, ErlOpts, LfeFirstFiles) ->
+    rebar_log:log(debug, "Starting dotlfe_compile/6 ..."), %% XXX DEBUG
     rebar_log:log(debug, "erl_opts ~p", [ErlOpts]),
     %% Support the src_dirs option allowing multiple directories to
     %% contain erlang source. This might be used, for example, should
@@ -552,9 +557,3 @@ internal_lfe_compile(Config, Dir, Module, OutDir, ErlOpts) ->
         {error, Es, Ws} ->
             rebar_base_compiler:error_tuple(Config, Module, Es, Ws, Opts)
     end.
-
-no_lfe () ->
-    rebar_log:log("~n"
-                  "*** MISSING LFE COMPILER ***~n"
-                  "~n", []),
-    rebar_utils:abort().
