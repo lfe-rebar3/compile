@@ -12,8 +12,6 @@
 -export([compile/2,
          lfe_compile/3]).
 
--include_lib("stdlib/include/erl_compile.hrl").
-
 -define(PROVIDER, compile).
 -define(DESC, "The LFE rebar3 compiler plugin").
 -define(DEPS, [{default, compile},
@@ -153,6 +151,7 @@ target_base(OutDir, Source) ->
     file:filename(), list()) -> ok | {ok, any()} | {error, any(), any()}.
 internal_lfe_compile(Config, Dir, Module, OutDir, ErlOpts) ->
     Target = target_base(OutDir, Module) ++ ".beam",
+    rebar_api:debug("Compiling ~p to ~p ...", [Module, Target]),
     ok = filelib:ensure_dir(Target),
     Opts = [{outdir, filename:dirname(Target)}] ++ ErlOpts ++
         [{i, filename:join(Dir, "include")}, return],
