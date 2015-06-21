@@ -13,12 +13,12 @@
          lfe_compile/2,
          lfe_compile/3]).
 
+-include_lib("stdlib/include/erl_compile.hrl").
+
 -define(PROVIDER, compile).
 -define(DESC, "The LFE rebar3 compiler plugin").
 -define(DEPS, [{default, compile},
                {default, app_discovery}]).
--include_lib("stdlib/include/erl_compile.hrl").
-
 -define(ERLCINFO_VSN, 2).
 -define(ERLCINFO_FILE, "erlcinfo").
 -type erlc_info_v() :: {digraph:vertex(), term()} | 'false'.
@@ -111,12 +111,12 @@ build_app(State, Providers, AppInfo) ->
 compile(State, Providers, AppInfo) ->
     rebar_log:log(info, "Compiling ~s", [rebar_app_info:name(AppInfo)]),
     AppDir = rebar_app_info:dir(AppInfo),
-    rebar_hooks:run_all_hooks(AppDir, pre, ?PROVIDER,  Providers, State),
+    rebar_hooks:run_provider_hooks(AppDir, pre, ?PROVIDER,  Providers, State),
 
     lfe_compile(State, ec_cnv:to_list(rebar_app_info:out_dir(AppInfo))),
     case rebar_otp_app:compile(State, AppInfo) of
         {ok, AppInfo1} ->
-            rebar_hooks:run_all_hooks(AppDir, post, ?PROVIDER, Providers, State),
+            rebar_hooks:run_provider_hooks(AppDir, post, ?PROVIDER, Providers, State),
             has_all_artifacts(State),
             AppInfo1;
         Error ->
@@ -183,14 +183,9 @@ symlink_or_copy(OldAppDir, AppDir, Dir) ->
 
 -spec dotlfe_compile(rebar_state:t(), file:filename(), file:filename()) -> ok.
 dotlfe_compile(State, Dir, ODir) ->
-    case code:which(lfe_comp) of
-        non_existing ->
-            no_lfe();
-        _ ->
-            ErlOpts = rebar_utils:erl_opts(State),
-            LfeFirstFiles = check_files(rebar_state:get(State, lfe_first_files, [])),
-            dotlfe_compile(State, Dir, ODir, [], ErlOpts, LfeFirstFiles)
-    end.
+    ErlOpts = rebar_utils:erl_opts(State),
+    LfeFirstFiles = check_files(rebar_state:get(State, lfe_first_files, [])),
+    dotlfe_compile(State, Dir, ODir, [], ErlOpts, LfeFirstFiles).
 
 dotlfe_compile(Config, Dir, OutDir, MoreSources, ErlOpts, LfeFirstFiles) ->
     rebar_log:log(debug, "erl_opts ~p", [ErlOpts]),
