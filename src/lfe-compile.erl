@@ -36,7 +36,7 @@
 %% ===================================================================
 -spec init(rebar_state:t()) -> {ok, rebar_state:t()}.
 init(State) ->
-    rebar_log:log(debug, "Initializing {lfe, compile} ..."), %% XXX DEBUG
+    rebar_log:log(debug, "Initializing {lfe, compile} ...", []), %% XXX DEBUG
     Provider = providers:create([
             {name, compile},
             {module, ?MODULE},
@@ -49,13 +49,13 @@ init(State) ->
             {opts, []}
     ]),
     State1 = rebar_state:add_provider(State, Provider),
-    rebar_log:log(debug, "Initialized {lfe, compile} ..."), %% XXX DEBUG
+    rebar_log:log(debug, "Initialized {lfe, compile} ...", []), %% XXX DEBUG
     {ok, State1}.
 
 
 -spec do(rebar_state:t()) -> {ok, rebar_state:t()} | {error, string()}.
 do(State) ->
-    rebar_log:log(debug, "Started 'do' ..."), %% XXX DEBUG
+    rebar_log:log(debug, "Started 'do' ...", []), %% XXX DEBUG
     DepsPaths = rebar_state:code_paths(State, all_deps),
     PluginDepsPaths = rebar_state:code_paths(State, all_plugin_deps),
     rebar_utils:remove_from_code_path(PluginDepsPaths),
@@ -76,7 +76,7 @@ do(State) ->
     {ok, ProjectApps1} = rebar_digraph:compile_order(ProjectApps),
 
     %% Run top level hooks *before* project apps compiled but *after* deps are
-    rebar_log:log(debug, "Preparing to run pre hooks ..."), %% XXX DEBUG
+    rebar_log:log(debug, "Preparing to run pre hooks ...", []), %% XXX DEBUG
     rebar_hooks:run_provider_hooks(Cwd, pre, ?PROVIDER, Providers, State),
 
     ProjectApps2 = build_apps(State, Providers, ProjectApps1),
@@ -85,14 +85,14 @@ do(State) ->
     ProjAppsPaths = [filename:join(rebar_app_info:out_dir(X), "ebin") || X <- ProjectApps2],
     State3 = rebar_state:code_paths(State2, all_deps, DepsPaths ++ ProjAppsPaths),
 
-    rebar_log:log(debug, "Preparing to run post hooks ..."), %% XXX DEBUG
+    rebar_log:log(debug, "Preparing to run post hooks ...", []), %% XXX DEBUG
     rebar_hooks:run_provider_hooks(Cwd, post, ?PROVIDER, Providers, State2),
     has_all_artifacts(State3),
 
     rebar_utils:cleanup_code_path(rebar_state:code_paths(State3, default)),
 
     {ok, State3}.
-
+    
 -spec format_error(any()) -> iolist().
 format_error({missing_artifact, File}) ->
     io_lib:format("Missing artifact ~s", [File]);
@@ -186,13 +186,13 @@ symlink_or_copy(OldAppDir, AppDir, Dir) ->
 
 -spec dotlfe_compile(rebar_state:t(), file:filename(), file:filename()) -> ok.
 dotlfe_compile(State, Dir, ODir) ->
-    rebar_log:log(debug, "Starting dotlfe_compile/3 ..."), %% XXX DEBUG
+    rebar_log:log(debug, "Starting dotlfe_compile/3 ...", []), %% XXX DEBUG
     ErlOpts = rebar_utils:erl_opts(State),
     LfeFirstFiles = check_files(rebar_state:get(State, lfe_first_files, [])),
     dotlfe_compile(State, Dir, ODir, [], ErlOpts, LfeFirstFiles).
 
 dotlfe_compile(Config, Dir, OutDir, MoreSources, ErlOpts, LfeFirstFiles) ->
-    rebar_log:log(debug, "Starting dotlfe_compile/6 ..."), %% XXX DEBUG
+    rebar_log:log(debug, "Starting dotlfe_compile/6 ...", []), %% XXX DEBUG
     rebar_log:log(debug, "erl_opts ~p", [ErlOpts]),
     %% Support the src_dirs option allowing multiple directories to
     %% contain erlang source. This might be used, for example, should
