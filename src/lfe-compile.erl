@@ -55,7 +55,7 @@ init(State) ->
 
 -spec do(rebar_state:t()) -> {ok, rebar_state:t()} | {error, string()}.
 do(State) ->
-    rebar_log:log(debug, "Started 'do' ...", []), %% XXX DEBUG
+    rebar_log:log(debug, "Starting do/1 for {lfe, compile} ...", []), %% XXX DEBUG
     DepsPaths = rebar_state:code_paths(State, all_deps),
     PluginDepsPaths = rebar_state:code_paths(State, all_plugin_deps),
     rebar_utils:remove_from_code_path(PluginDepsPaths),
@@ -77,6 +77,10 @@ do(State) ->
 
     %% Run top level hooks *before* project apps compiled but *after* deps are
     rebar_log:log(debug, "Preparing to run pre hooks ...", []), %% XXX DEBUG
+    rebar_log:log(debug, "Cwd:  ...", [Cwd]), %% XXX DEBUG
+    rebar_log:log(debug, "PROVIER:  ...", [?PROVIDER]), %% XXX DEBUG
+    rebar_log:log(debug, "Providers:  ...", [Providers]), %% XXX DEBUG
+    rebar_log:log(debug, "State:  ...", [State]), %% XXX DEBUG
     rebar_hooks:run_provider_hooks(Cwd, pre, ?PROVIDER, Providers, State),
 
     ProjectApps2 = build_apps(State, Providers, ProjectApps1),
