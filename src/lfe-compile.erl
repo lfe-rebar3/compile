@@ -71,6 +71,7 @@ do(State) ->
     end.
 
 build_deps(State, DepsPaths) ->
+    rebar_api:debug("Building dependencies ...", []),
     code:add_pathsa(DepsPaths),
     Deps = rebar_state:deps_to_build(State),
     EmptyState = rebar_state:new(),
@@ -79,6 +80,7 @@ build_deps(State, DepsPaths) ->
     State.
 
 build_projs(State, DepsPaths) ->
+    rebar_api:debug("Building projects ...", []),
     DepsPaths = rebar_state:code_paths(State, all_deps),
     ProjectApps = rebar_state:project_apps(State),
     ProjectApps1 = build_apps(State, ProjectApps),
