@@ -43,36 +43,39 @@ init(State) ->
 -spec do(rebar_state:t()) -> {ok, rebar_state:t()} | {error, string()}.
 do(State) ->
     rebar_api:debug("Starting do/1 for {lfe, compile} ...", []),
+    DepsPaths = rebar_state:code_paths(State, all_deps),
+    AllApps = rebar_state:project_apps(State) ++ rebar_state:all_deps(State),
     case rebar_state:get(State, escript_main_app, undefined) of
         undefined ->
             Dir = rebar_state:dir(State),
             case rebar_app_discover:find_app(Dir, all) of
                 {true, AppInfo} ->
-                    AllApps = rebar_state:project_apps(State) ++ rebar_state:all_deps(State),
                     case rebar_app_utils:find(rebar_app_info:name(AppInfo), AllApps) of
                         {ok, AppInfo1} ->
                             %% Use the existing app info instead of newly created one
-                            compile(State, AppInfo1);
+                            build_all(State, DepsPaths, AppInfo1);
                         _ ->
-                            compile(State, AppInfo)
+                            build_all(State, DepsPaths, AppInfo)
                     end,
                     {ok, State};
                 _ ->
                     {error, {?MODULE, no_main_app}}
             end;
         Name ->
-            AllApps = rebar_state:project_apps(State) ++ rebar_state:all_deps(State),
-            DepsPaths = rebar_state:code_paths(State, all_deps),
-            State1 = build_deps(State, DepsPaths),
-            State2 = build_projs(State1, DepsPaths),
-            {ok, App} = rebar_app_utils:find(Name, AllApps),
-            compile(State2, App),
-            {ok, State2}
+            {ok, AppInfo} = rebar_app_utils:find(Name, AllApps),
+            {ok, build_all(State, DepsPaths, AppInfo)}
     end.
 
+build_all(State, DepsPaths, AppInfo) ->
+   State1 = build_deps(State, DepsPaths),
+   State2 = build_projs(State1, DepsPaths),
+   compile(State2, AppInfo),
+   State2.
+
 build_deps(State, DepsPaths) ->
-    rebar_api:debug("Building dependencies ...", []),
+    rebar_api:debug("Building dependencies:", []),
     code:add_pathsa(DepsPaths),
+    rebar_api:debug("Added code paths: ~p", [DepsPaths]),
     Deps = rebar_state:deps_to_build(State),
     EmptyState = rebar_state:new(),
     DepsState = rebar_state:all_deps(EmptyState, rebar_state:all_deps(State)),
@@ -80,7 +83,7 @@ build_deps(State, DepsPaths) ->
     State.
 
 build_projs(State, DepsPaths) ->
-    rebar_api:debug("Building projects ...", []),
+    rebar_api:debug("Building projects:", []),
     DepsPaths = rebar_state:code_paths(State, all_deps),
     ProjectApps = rebar_state:project_apps(State),
     ProjectApps1 = build_apps(State, ProjectApps),
@@ -90,9 +93,11 @@ build_projs(State, DepsPaths) ->
     State2.
 
 build_apps(State, Apps) ->
+    rebar_api:debug("Building apps ...", []),
     [build_app(State, AppInfo) || AppInfo <- Apps].
 
 build_app(State, AppInfo) ->
+    rebar_api:debug("\tBuilding app ~p ...", [rebar_app_info:name(AppInfo)]),
     AppDir = rebar_app_info:dir(AppInfo),
     OutDir = rebar_app_info:out_dir(AppInfo),
     copy_app_dirs(State, AppDir, OutDir),
@@ -110,8 +115,9 @@ format_error(Reason) ->
 compile(State, AppInfo) ->
     AppDir = rebar_app_info:dir(AppInfo),
     OutDir = filename:join(AppDir, "ebin"),
-    rebar_api:debug("Calculated outdir: ~p", [OutDir]), %% XXX DEBUG
-    lfe_compile(State, AppDir, OutDir).
+    rebar_api:debug("\t\tCalculated outdir: ~p", [OutDir]), %% XXX DEBUG
+    lfe_compile(State, AppDir, OutDir),
+    AppInfo.
 
 -spec lfe_compile(rebar_state:t(), file:name(), file:name()) -> 'ok'.
 lfe_compile(State, Dir, OutDir) ->
@@ -159,14 +165,14 @@ symlink_or_copy(OldAppDir, AppDir, Dir) ->
     
 -spec dotlfe_compile(rebar_state:t(), file:filename(), file:filename()) -> ok.
 dotlfe_compile(State, Dir, OutDir) ->
-    rebar_api:debug("Starting dotlfe_compile/3 ...", []), %% XXX DEBUG
+    rebar_api:debug("\t\tStarting dotlfe_compile/3 ...", []), %% XXX DEBUG
     ErlOpts = rebar_utils:erl_opts(State),
     LfeFirstFiles = check_files(rebar_state:get(State, lfe_first_files, [])),
     dotlfe_compile(State, Dir, OutDir, [], ErlOpts, LfeFirstFiles).
 
 dotlfe_compile(State, Dir, OutDir, MoreSources, ErlOpts, LfeFirstFiles) ->
-    rebar_api:debug("Starting dotlfe_compile/6 ...", []), %% XXX DEBUG
-    rebar_api:debug("erl_opts ~p", [ErlOpts]),
+    rebar_api:debug("\t\tStarting dotlfe_compile/6 ...", []), %% XXX DEBUG
+    rebar_api:debug("\t\terl_opts ~p", [ErlOpts]),
     %% Support the src_dirs option allowing multiple directories to
     %% contain erlang source. This might be used, for example, should
     %% eunit tests be separated from the core application source.
@@ -178,7 +184,7 @@ dotlfe_compile(State, Dir, OutDir, MoreSources, ErlOpts, LfeFirstFiles) ->
     true = code:add_patha(filename:absname(OutDir)),
 
     OutDir1 = proplists:get_value(outdir, ErlOpts, OutDir),
-    rebar_api:debug("Files to compile first: ~p", [LfeFirstFiles]),
+    rebar_api:debug("\t\tFiles to compile first: ~p", [LfeFirstFiles]),
     rebar_base_compiler:run(
       State, LfeFirstFiles, AllLfeFiles,
       fun(S, C) ->
@@ -195,7 +201,7 @@ check_files(FileList) ->
 
 check_file(File) ->
     case filelib:is_regular(File) of
-        false -> rebar_utils:abort("File ~p is missing, aborting\n", [File]);
+        false -> rebar_utils:abort("\t\tFile ~p is missing, aborting\n", [File]);
         true -> File
     end.
 
@@ -212,7 +218,7 @@ target_base(OutDir, Source) ->
     file:filename(), list()) -> ok | {ok, any()} | {error, any(), any()}.
 internal_lfe_compile(Config, Dir, Module, OutDir, ErlOpts) ->
     Target = target_base(OutDir, Module) ++ ".beam",
-    rebar_api:debug("Compiling ~p~n\tto ~p ...", [Module, Target]),
+    rebar_api:debug("\t\tCompiling ~p~n\t\t\tto ~p ...", [Module, Target]),
     ok = filelib:ensure_dir(Target),
     Opts = [{outdir, filename:dirname(Target)}] ++ ErlOpts ++
         [{i, filename:join(Dir, "include")}, return],
