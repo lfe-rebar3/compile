@@ -27,6 +27,8 @@ build_all(State, DepsPaths, AppInfo) ->
 build_deps(State, DepsPaths) ->
     rebar_api:debug("Building dependencies:", []),
     code:add_pathsa(DepsPaths),
+    PluginDepsPaths = rebar_state:code_paths(State, all_plugin_deps),
+    code:add_pathsa(PluginDepsPaths),
     rebar_api:debug("Added code paths: ~p", [DepsPaths]),
     Deps = rebar_state:deps_to_build(State),
     EmptyState = rebar_state:new(),
