@@ -67,10 +67,14 @@ do(State) ->
     end.
 
 build_all(State, DepsPaths, AppInfo) ->
-   State1 = build_deps(State, DepsPaths),
-   State2 = build_projs(State1, DepsPaths),
-   compile(State2, AppInfo),
-   State2.
+    Providers = rebar_state:providers(State),
+    State1 = build_deps(State, DepsPaths),
+    rebar_hooks:run_provider_hooks(Cwd, pre, ?PROVIDER, Providers, State1),
+    State2 = build_projs(State1, DepsPaths),
+    compile(State2, AppInfo),
+    rebar_hooks:run_provider_hooks(Cwd, post, ?PROVIDER, Providers, State1),
+    has_all_artifacts(State2),
+    State2.
 
 build_deps(State, DepsPaths) ->
     rebar_api:debug("Building dependencies:", []),
