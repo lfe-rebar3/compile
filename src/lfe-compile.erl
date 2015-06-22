@@ -62,11 +62,43 @@ do(State) ->
             end;
         Name ->
             AllApps = rebar_state:project_apps(State) ++ rebar_state:all_deps(State),
+            DepsPaths = rebar_state:code_paths(State, all_deps),
+            State1 = build_deps(State, DepsPaths),
+            State2 = build_projs(State1, DepsPaths),
             {ok, App} = rebar_app_utils:find(Name, AllApps),
-            compile(State, App),
-            {ok, State}
+            compile(State2, App),
+            {ok, State2}
     end.
 
+build_deps(State, DepsPaths) ->
+    code:add_pathsa(DepsPaths),
+    Deps = rebar_state:deps_to_build(State),
+    EmptyState = rebar_state:new(),
+    DepsState = rebar_state:all_deps(EmptyState, rebar_state:all_deps(State)),
+    build_apps(DepsState, Deps),
+    State.
+
+build_projs(State, DepsPaths) ->
+    DepsPaths = rebar_state:code_paths(State, all_deps),
+    ProjectApps = rebar_state:project_apps(State),
+    ProjectApps1 = build_apps(State, ProjectApps),
+    State1 = rebar_state:project_apps(State, ProjectApps1),
+    ProjAppsPaths = [filename:join(rebar_app_info:out_dir(X), "ebin") || X <- ProjectApps1],
+    State2 = rebar_state:code_paths(State1, all_deps, DepsPaths ++ ProjAppsPaths),
+    State2.
+
+build_apps(State, Apps) ->
+    [build_app(State, AppInfo) || AppInfo <- Apps].
+
+build_app(State, AppInfo) ->
+    AppDir = rebar_app_info:dir(AppInfo),
+    OutDir = rebar_app_info:out_dir(AppInfo),
+    copy_app_dirs(State, AppDir, OutDir),
+
+    S = rebar_app_info:state_or_new(State, AppInfo),
+    S1 = rebar_state:all_deps(S, rebar_state:all_deps(State)),
+    compile(S1, AppInfo).
+    
 -spec format_error(any()) -> iolist().
 format_error({missing_artifact, File}) ->
     io_lib:format("Missing artifact ~s", [File]);
@@ -96,6 +128,33 @@ info(Description) ->
         "'erl_opts'.~n",
         [Description]).
 
+copy_app_dirs(State, OldAppDir, AppDir) ->
+    case ec_cnv:to_binary(filename:absname(OldAppDir)) =/=
+        ec_cnv:to_binary(filename:absname(AppDir)) of
+        true ->
+            EbinDir = filename:join([OldAppDir, "ebin"]),
+            %% copy all files from ebin if it exists
+            case filelib:is_dir(EbinDir) of
+                true ->
+                    OutEbin = filename:join(AppDir, "ebin"),
+                    filelib:ensure_dir(filename:join(OutEbin, "dummy.beam")),
+                    rebar_file_utils:cp_r(filelib:wildcard(filename:join(EbinDir, "*")), OutEbin);
+                false ->
+                    ok
+            end,
+            filelib:ensure_dir(filename:join(AppDir, "dummy")),
+            %% link to src_dirs to be adjacent to ebin is needed for R15 use of cover/xref
+            SrcDirs = rebar_dir:all_src_dirs(State, ["src"], ["test"]),
+            [symlink_or_copy(OldAppDir, AppDir, Dir) || Dir <- ["priv", "include"] ++ SrcDirs];
+        false ->
+            ok
+    end.
+
+symlink_or_copy(OldAppDir, AppDir, Dir) ->
+    Source = filename:join(OldAppDir, Dir),
+    Target = filename:join(AppDir, Dir),
+    rebar_file_utils:symlink_or_copy(Source, Target).
+    
 -spec dotlfe_compile(rebar_state:t(), file:filename(), file:filename()) -> ok.
 dotlfe_compile(State, Dir, OutDir) ->
     rebar_api:debug("Starting dotlfe_compile/3 ...", []), %% XXX DEBUG
