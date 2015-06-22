@@ -5,18 +5,16 @@
 -module('lfe-compile').
 -behaviour(provider).
 
+-include("const.hrl").
+
 -export([init/1,
          do/1,
          format_error/1]).
 
--export([compile/2,
-         lfe_compile/3]).
-
--define(PROVIDER, compile).
 -define(DESC, "The LFE rebar3 compiler plugin").
 -define(DEPS, [{default, compile},
                {default, app_discovery}]).
--define(RE_PREFIX, "^[^._]").
+
 
 %% ===================================================================
 %% Public API

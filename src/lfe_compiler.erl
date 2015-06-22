@@ -4,7 +4,13 @@
 %%
 -module(lfe_compiler).
 
+-include("const.hrl").
+
 -export([build_all/3,
+         build_deps/2,
+         build_projs/2,
+         build_apps/2,
+         build_app/2,
          compile/2,
          lfe_compile/3]).
 
@@ -149,7 +155,7 @@ target_base(OutDir, Source) ->
     file:filename(), list()) -> ok | {ok, any()} | {error, any(), any()}.
 internal_lfe_compile(Config, Dir, Module, OutDir, ErlOpts) ->
     Target = target_base(OutDir, Module) ++ ".beam",
-    rebar_api:debug("\t\tCompiling ~p~n\t\t\tto ~p ...", [Module, Target]),
+    rebar_api:debug("\t\tCompiling~n\t\t\t~p~n\t\t\tto ~p ...", [Module, Target]),
     ok = filelib:ensure_dir(Target),
     Opts = [{outdir, filename:dirname(Target)}] ++ ErlOpts ++
         [{i, filename:join(Dir, "include")}, return],

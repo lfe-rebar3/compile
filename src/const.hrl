@@ -1,0 +1,2 @@
+-define(PROVIDER, compile).
+-define(RE_PREFIX, "^[^._]").
