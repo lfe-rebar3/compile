@@ -101,7 +101,7 @@ symlink_or_copy(OldAppDir, AppDir, Dir) ->
     Source = filename:join(OldAppDir, Dir),
     Target = filename:join(AppDir, Dir),
     rebar_file_utils:symlink_or_copy(Source, Target).
-    
+
 -spec dotlfe_compile(rebar_state:t(), file:filename(), file:filename()) -> ok.
 dotlfe_compile(State, Dir, OutDir) ->
     rebar_api:debug("\t\tStarting dotlfe_compile/3 ...", []), %% XXX DEBUG

@@ -65,7 +65,7 @@ do(State) ->
     end.
 
 
-    
+
 -spec format_error(any()) -> iolist().
 format_error({missing_artifact, File}) ->
     io_lib:format("Missing artifact ~s", [File]);
