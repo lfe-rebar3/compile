@@ -6,12 +6,7 @@
 
 -include("const.hrl").
 
--export([build_all/3,
-         build_deps/2,
-         build_projs/2,
-         build_apps/2,
-         build_app/2,
-         compile/2, compile/3]).
+-export([compile/1, compile/3, compile/4]).
 
 %% ===================================================================
 %% Public API
