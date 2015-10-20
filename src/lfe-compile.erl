@@ -19,7 +19,6 @@
 %% ===================================================================
 %% Public API
 %% ===================================================================
--spec init(rebar_state:t()) -> {ok, rebar_state:t()}.
 init(State) ->
     rebar_log:log(debug, "Initializing {lfe, compile} ...", []), %% XXX DEBUG
     Provider = providers:create([
@@ -38,7 +37,6 @@ init(State) ->
     {ok, State1}.
 
 
--spec do(rebar_state:t()) -> {ok, rebar_state:t()} | {error, string()}.
 do(State) ->
     rebar_api:debug("Starting do/1 for {lfe, compile} ...", []),
     DepsPaths = rebar_state:code_paths(State, all_deps),
@@ -75,7 +73,6 @@ do(State) ->
 
     {ok, State3}.
 
--spec format_error(any()) -> iolist().
 format_error({missing_artifact, File}) ->
     io_lib:format("Missing artifact ~s", [File]);
 format_error(Reason) ->
