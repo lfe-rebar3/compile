@@ -54,7 +54,7 @@ dotlfe_compile(State, Dir, OutDir, MoreSources, ErlOpts, LfeFirstFiles) ->
         State, LfeFirstFiles, AllLfeFiles,
         fun(S, C) ->
             internal_lfe_compile(C, Dir, S, OutDir1, ErlOpts)
-        end),
+        end)
     end,
     ok.
 
