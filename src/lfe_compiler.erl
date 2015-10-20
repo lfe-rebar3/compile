@@ -57,7 +57,7 @@ dotlfe_compile(State, Dir, OutDir, MoreSources, ErlOpts, LfeFirstFiles) ->
     ok.
 
 gather_src([], Srcs) ->
-    ?DEBUG("src_files ~p", [Srcs]),
+    rebar_api:debug("\t\tsrc_files: ~p", [Srcs]),
     Srcs;
 gather_src([Dir|Rest], Srcs) ->
     gather_src(
