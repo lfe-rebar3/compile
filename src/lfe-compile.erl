@@ -20,7 +20,7 @@
 %% Public API
 %% ===================================================================
 init(State) ->
-    rebar_log:log(debug, "Initializing {lfe, compile} ...", []), %% XXX DEBUG
+    rebar_api:debug("Initializing {lfe, compile} ...", []), %% XXX DEBUG
     Provider = providers:create([
             {name, compile},
             {module, ?MODULE},
@@ -33,7 +33,7 @@ init(State) ->
             {opts, []}
     ]),
     State1 = rebar_state:add_provider(State, Provider),
-    rebar_log:log(debug, "Initialized {lfe, compile} ...", []), %% XXX DEBUG
+    rebar_api:debug("Initialized {lfe, compile} ...", []), %% XXX DEBUG
     {ok, State1}.
 
 
@@ -104,7 +104,7 @@ compile(State, AppInfo) ->
     compile(State, rebar_state:providers(State), AppInfo).
 
 compile(State, Providers, AppInfo) ->
-    ?INFO("Compiling ~s", [rebar_app_info:name(AppInfo)]),
+    rebar_api:info("Compiling ~s", [rebar_app_info:name(AppInfo)]),
     AppDir = rebar_app_info:dir(AppInfo),
     AppInfo1 = rebar_hooks:run_all_hooks(AppDir, pre, ?PROVIDER,  Providers, AppInfo, State),
 
