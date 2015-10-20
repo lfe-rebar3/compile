@@ -29,13 +29,13 @@ compile(Opts, Dir, OutDir, More) ->
 %% ===================================================================
 
 dotlfe_compile(State, Dir, OutDir) ->
-    rebar_api:debug("\t\tStarting dotlfe_compile/3 ...", []), %% XXX DEBUG
+    rebar_api:debug("\t\tStarting dotlfe_compile/3 ...", []),
     ErlOpts = rebar_utils:erl_opts(State),
     LfeFirstFiles = check_files(rebar_state:get(State, lfe_first_files, [])),
     dotlfe_compile(State, Dir, OutDir, [], ErlOpts, LfeFirstFiles).
 
 dotlfe_compile(State, Dir, OutDir, MoreSources, ErlOpts, LfeFirstFiles) ->
-    rebar_api:debug("\t\tStarting dotlfe_compile/6 ...", []), %% XXX DEBUG
+    rebar_api:debug("\t\tStarting dotlfe_compile/6 ...", []),
     rebar_api:debug("\t\terl_opts ~p", [ErlOpts]),
     %% Support the src_dirs option allowing multiple directories to
     %% contain erlang source. This might be used, for example, should
@@ -55,6 +55,8 @@ dotlfe_compile(State, Dir, OutDir, MoreSources, ErlOpts, LfeFirstFiles) ->
         fun(S, C) ->
             internal_lfe_compile(C, Dir, S, OutDir1, ErlOpts)
         end)
+    catch
+      _ -> true
     end,
     ok.
 
