@@ -56,6 +56,13 @@ dotlfe_compile(State, Dir, OutDir, MoreSources, ErlOpts, LfeFirstFiles) ->
       end),
     ok.
 
+gather_src([], Srcs) ->
+    ?DEBUG("src_files ~p", [Srcs]),
+    Srcs;
+gather_src([Dir|Rest], Srcs) ->
+    gather_src(
+      Rest, Srcs ++ rebar_utils:find_files(Dir, ?RE_PREFIX".*\\.lfe\$")).
+
 %%
 %% Ensure all files in a list are present and abort if one is missing
 %%
