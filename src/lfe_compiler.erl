@@ -49,11 +49,13 @@ dotlfe_compile(State, Dir, OutDir, MoreSources, ErlOpts, LfeFirstFiles) ->
 
     OutDir1 = proplists:get_value(outdir, ErlOpts, OutDir),
     rebar_api:debug("\t\tFiles to compile first: ~p", [LfeFirstFiles]),
-    rebar_base_compiler:run(
-      State, LfeFirstFiles, AllLfeFiles,
-      fun(S, C) ->
-          internal_lfe_compile(C, Dir, S, OutDir1, ErlOpts)
-      end),
+    try
+      rebar_base_compiler:run(
+        State, LfeFirstFiles, AllLfeFiles,
+        fun(S, C) ->
+            internal_lfe_compile(C, Dir, S, OutDir1, ErlOpts)
+        end),
+    end,
     ok.
 
 gather_src([], Srcs) ->
