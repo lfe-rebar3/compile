@@ -82,17 +82,18 @@ check_file(File) ->
 target_base(OutDir, Source) ->
     filename:join(OutDir, filename:basename(Source, ".lfe")).
 
-internal_lfe_compile(Config, Dir, Module, OutDir, ErlOpts) ->
-    Target = target_base(OutDir, Module) ++ ".beam",
-    rebar_api:debug("\t\tCompiling~n\t\t\t~p~n\t\t\tto ~p ...", [Module, Target]),
+internal_lfe_compile(Config, Dir, Source, OutDir, ErlOpts) ->
+    Target = target_base(OutDir, Source) ++ ".beam",
+    rebar_api:debug("\t\tCompiling~n\t\t\t~p~n\t\t\tto ~p ...", [Source, Target]),
     ok = filelib:ensure_dir(Target),
     Opts = [{outdir, filename:dirname(Target)}] ++ ErlOpts ++
         [{i, filename:join(Dir, "include")}, return],
-    case lfe_comp:file(Module, Opts) of
+    case lfe_comp:file(Source, Opts) of
         {ok, _Mod} ->
             ok;
         {ok, _Mod, Ws} ->
-            rebar_base_compiler:ok_tuple(Config, Module, Ws);
+            rebar_base_compiler:ok_tuple(Config, Source, Ws);
         {error, Es, Ws} ->
-            rebar_base_compiler:error_tuple(Config, Module, Es, Ws, Opts)
+            rebar_base_compiler:error_tuple(Config, Source, Es, Ws, Opts)
     end.
+
