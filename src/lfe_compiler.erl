@@ -28,7 +28,8 @@ compile(Opts, Source, AppDir, OutDir, ErlOpts) ->
     true = code:add_patha(filename:absname(OutDir)),
     rebar_api:debug("\t\tCompiling~n\t\t\t~p~n\t\t\tto ~p ...", [Source, Target]),
     Opts1 = [{outdir, OutDir}] ++ ErlOpts ++
-        [{i, include_dir()}, return],
+       %% [{i, include_dir()}, return],
+       [return],
     rebar_api:debug("\t\tOpts: ~p", [Opts1]),
     case lfe_comp:file(Source, Opts1) of
         {ok, _Mod} ->
