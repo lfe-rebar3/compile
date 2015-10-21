@@ -48,7 +48,7 @@ do(State) ->
     [begin
          Opts = rebar_app_info:opts(AppInfo),
          AppDir = rebar_app_info:dir(AppInfo),
-         OtherSrcDirs = rebar_dir:src_dirs(Opts),
+         OtherSrcDirs = rebar_dir:src_dirs(Opts) ++ ["test"],
          rebar_api:debug("OtherSrcDirs: ~p", [OtherSrcDirs]),
          SourceDirs = get_src_dirs(AppDir, ["src"] ++ OtherSrcDirs),
          OutDir = filename:join(rebar_app_info:out_dir(AppInfo), "ebin"),
