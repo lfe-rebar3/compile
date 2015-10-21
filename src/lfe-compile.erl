@@ -48,19 +48,19 @@ do(State) ->
     [begin
          Opts = rebar_app_info:opts(AppInfo),
          AppDir = rebar_app_info:dir(AppInfo),
-         SourceDir = filename:join(AppDir, "src"),
+         SourceDirs = [filename:join(AppDir, "src")] ++ rebar_dir:src_dirs(Opts),
          OutDir = filename:join(rebar_app_info:out_dir(AppInfo), "ebin"),
          FirstFiles = rebar_opts:get(Opts, lfe_first_files, []),
-         FoundFiles = rebar_utils:find_files(SourceDir, ".*\\.lfe\$"),
+         Files = get_files(FirstFiles, SourceDirs),
          rebar_api:debug("AppInfoDir: ~p", [AppDir]),
-         rebar_api:debug("SourceDir: ~p", [SourceDir]),
+         rebar_api:debug("SourceDirs: ~p", [SourceDirs]),
          rebar_api:debug("OutDir: ~p", [OutDir]),
          rebar_api:debug("FirstFiles: ~p", [FirstFiles]),
-         rebar_api:debug("FoundFiles: ~p", [FoundFiles]),
+         rebar_api:debug("Files: ~p", [Files]),
          CompileFun = fun(Source, Opts1) ->
                               lfe_compiler:compile(Opts1, Source, AppDir, OutDir)
                       end,
-         rebar_base_compiler:run(Opts, [], FirstFiles ++ FoundFiles, CompileFun)
+         rebar_base_compiler:run(Opts, [], Files, CompileFun)
      end || AppInfo <- Apps],
     {ok, State}.
 
@@ -82,3 +82,9 @@ info(Description) ->
         "LFE. For more information, see the rebar documentation for~n"
         "'erl_opts'.~n",
         [Description]).
+
+get_files(First, Dirs) ->
+    Files = [rebar_utils:find_files(Dir, ".*\\.lfe\$") || Dir <- Dirs],
+    NoDuplicates = sets:subtract(sets:from_list(Files), sets:from_list(First)),
+    First ++ sets:to_list(NoDuplicates).
+
