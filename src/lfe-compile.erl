@@ -48,7 +48,7 @@ do(State) ->
     [begin
          Opts = rebar_app_info:opts(AppInfo),
          AppDir = rebar_app_info:dir(AppInfo),
-         OtherSrcDirs = rebar_dir:src_dirs(Opts) ++ ["test"],
+         OtherSrcDirs = rebar_dir:src_dirs(Opts),%% ++ ["test"],
          rebar_api:debug("OtherSrcDirs: ~p", [OtherSrcDirs]),
          SourceDirs = get_src_dirs(AppDir, ["src"] ++ OtherSrcDirs),
          OutDir = filename:join(rebar_app_info:out_dir(AppInfo), "ebin"),
@@ -86,9 +86,9 @@ info(Description) ->
         [Description]).
 
 get_files(First, Dirs) ->
-    rebar_api:debug("Dirs: ~p", Dirs),
+    rebar_api:debug("Dirs: ~p", [Dirs]),
     Files = [rebar_utils:find_files(Dir, ".*\\.lfe\$") || Dir <- Dirs],
-    rebar_api:debug("Files: ~p", Files),
+    rebar_api:debug("Files: ~p", [Files]),
     NoDuplicates = lists:subtract(lists:usort(Files), First),
     First ++ NoDuplicates.
 
