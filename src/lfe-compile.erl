@@ -48,6 +48,7 @@ do(State) ->
     [begin
          Opts = rebar_app_info:opts(AppInfo),
          AppDir = rebar_app_info:dir(AppInfo),
+         code:add_patha(AppDir),
          OtherSrcDirs = rebar_dir:src_dirs(Opts),
          rebar_api:debug("OtherSrcDirs: ~p", [OtherSrcDirs]),
          SourceDirs = get_src_dirs(AppDir, ["src"] ++ OtherSrcDirs),
