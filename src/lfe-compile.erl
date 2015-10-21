@@ -52,11 +52,12 @@ do(State) ->
          rebar_api:debug("AppInfoDir: ~p", [AppInfoDir]),
          SourceDir = filename:join(AppInfoDir, "src"),
          rebar_api:debug("SourceDir: ~p", [SourceDir]),
+         FirstFiles = rebar_opts:get(Opts, lfe_first_files, []),
          FoundFiles = rebar_utils:find_files(SourceDir, ".*\\.lfe\$"),
          CompileFun = fun(Source, Opts1) ->
                               lfe_compiler:compile(Opts1, Source, OutDir)
                       end,
-         rebar_base_compiler:run(Opts, [], FoundFiles, CompileFun)
+         rebar_base_compiler:run(Opts, [], FirstFiles ++ FoundFiles, CompileFun)
      end || AppInfo <- Apps],
     {ok, State}.
 
@@ -68,6 +69,7 @@ format_error(Reason) ->
 %% ===================================================================
 %% Internal functions
 %% ===================================================================
+
 info(Description) ->
     io_lib:format(
         "~n~s~n"
