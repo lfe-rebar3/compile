@@ -48,7 +48,7 @@ do(State) ->
     [begin
          Opts = rebar_app_info:opts(AppInfo),
          OutDir = rebar_app_info:out_dir(AppInfo),
-         SourceDir = filename:join(rebar_app_info:dir(AppInfo), "lfe_files"),
+         SourceDir = filename:join(rebar_app_info:dir(AppInfo), "src"),
          FoundFiles = rebar_utils:find_files(SourceDir, ".*\\.lfe\$"),
 
          CompileFun = fun(Source, Opts1) ->
