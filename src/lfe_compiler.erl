@@ -12,12 +12,12 @@
 %% Public API
 %% ===================================================================
 
-compile(Opts, Source, AppDir, OutDir) ->
+compile(State, Source, AppDir, OutDir) ->
     rebar_api:debug("\t\tEntered compile/3 ...", []),
-    ErlOpts = rebar_opts:erl_opts(Opts),
-    compile(Opts, Source, AppDir, OutDir, ErlOpts).
+    ErlOpts = rebar_opts:erl_opts(State),
+    compile(State, Source, AppDir, OutDir, ErlOpts).
 
-compile(Opts, Source, AppDir, OutDir, ErlOpts) ->
+compile(State, Source, AppDir, OutDir, ErlOpts) ->
     Target = target_file(OutDir, Source),
     rebar_api:debug("\t\tEntered compile/4 ...", []),
     rebar_api:debug("\t\tSource: ~p~n\t\tOutDir: ~p", [Source, OutDir]),
@@ -27,19 +27,19 @@ compile(Opts, Source, AppDir, OutDir, ErlOpts) ->
     ok = filelib:ensure_dir(filename:join(OutDir, "dummy.beam")),
     true = code:add_patha(filename:absname(OutDir)),
     rebar_api:debug("\t\tCompiling~n\t\t\t~p~n\t\t\tto ~p ...", [Source, Target]),
-    Opts1 = [{outdir, OutDir}] ++ ErlOpts ++
+    Opts = [{outdir, OutDir}] ++ ErlOpts ++
        [{i, include_dir()}, return, verbose],
        %%[return, verbose],
-    rebar_api:debug("\t\tOpts: ~p", [Opts1]),
-    CompileResults = lfe_comp:file(Source, Opts1),
+    rebar_api:debug("\t\tOpts: ~p", [Opts]),
+    CompileResults = lfe_comp:file(Source, Opts),
     rebar_api:debug("Compile results: ~p", [CompileResults]),
-    case lfe_comp:file(Source, Opts1) of
+    case lfe_comp:file(Source, Opts) of
         {ok, _Mod} ->
             ok;
         {ok, _Mod, Ws} ->
-            rebar_base_compiler:ok_tuple(Opts1, Source, Ws);
+            rebar_base_compiler:ok_tuple(State, Source, Ws);
         {error, Es, Ws} ->
-            rebar_base_compiler:error_tuple(Opts1, Source, Es, Ws, Opts)
+            rebar_base_compiler:error_tuple(State, Source, Es, Ws, Opts)
     end.
 
 %% ===================================================================
