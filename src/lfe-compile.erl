@@ -28,7 +28,7 @@ init(State) ->
             {namespace, ?NAMESPACE},
             {bare, true},
             {deps, ?DEPS},
-            {example, "rebar3 " ++ ?NAMESPACE ++ " compile"},
+            {example, "rebar3 lfe compile"},
             {short_desc, ?DESC},
             {desc, info(?DESC)},
             {opts, []}
