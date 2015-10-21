@@ -29,7 +29,7 @@ compile(Opts, Source, AppDir, OutDir, ErlOpts) ->
     rebar_api:debug("\t\tCompiling~n\t\t\t~p~n\t\t\tto ~p ...", [Source, Target]),
     Opts1 = [{outdir, OutDir}] ++ ErlOpts ++
        %% [{i, include_dir()}, return],
-       [return verbose],
+       [return, verbose],
     rebar_api:debug("\t\tOpts: ~p", [Opts1]),
     case lfe_comp:file(Source, Opts1) of
         {ok, _Mod} ->
