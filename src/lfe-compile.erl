@@ -52,7 +52,7 @@ do(State) ->
          rebar_api:debug("OtherSrcDirs: ~p", [OtherSrcDirs]),
          SourceDirs = get_src_dirs(AppDir, ["src"] ++ OtherSrcDirs),
          OutDir = filename:join(rebar_app_info:out_dir(AppInfo), "ebin"),
-         FirstFiles = rebar_opts:get(Opts, lfe_first_files, []),
+         FirstFiles = get_first_files(Opts, AppDir),
          Files = get_files(FirstFiles, SourceDirs),
          rebar_api:debug("AppInfoDir: ~p", [AppDir]),
          rebar_api:debug("SourceDirs: ~p", [SourceDirs]),
@@ -84,6 +84,10 @@ info(Description) ->
         "LFE. For more information, see the rebar documentation for~n"
         "'erl_opts'.~n",
         [Description]).
+
+get_first_files(Opts, AppDir) ->
+    Dirs = rebar_opts:get(Opts, lfe_first_files, []),
+    [filename:join(AppDir, Dir) || Dir <- Dirs].
 
 get_files(First, Dirs) ->
     rebar_api:debug("Dirs: ~p", [Dirs]),
