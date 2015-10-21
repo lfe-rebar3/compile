@@ -36,7 +36,6 @@ init(State) ->
     rebar_api:debug("Initialized {lfe, compile} ...", []), %% XXX DEBUG
     {ok, State1}.
 
-
 do(State) ->
     rebar_api:debug("Starting do/1 for {lfe, compile} ...", []),
     DepsPaths = rebar_state:code_paths(State, all_deps),
@@ -104,7 +103,7 @@ compile(State, AppInfo) ->
     compile(State, rebar_state:providers(State), AppInfo).
 
 compile(State, Providers, AppInfo) ->
-    rebar_api:info("Compiling ~s", [rebar_app_info:name(AppInfo)]),
+    rebar_api:info("Compiling ~s (LFE)", [rebar_app_info:name(AppInfo)]),
     AppDir = rebar_app_info:dir(AppInfo),
     AppInfo1 = rebar_hooks:run_all_hooks(AppDir, pre, ?PROVIDER,  Providers, AppInfo, State),
 
