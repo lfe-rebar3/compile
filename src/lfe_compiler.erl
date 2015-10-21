@@ -29,20 +29,25 @@ compile(Opts, Dir, OutDir, More) ->
 %% ===================================================================
 
 dotlfe_compile(State, Dir, OutDir) ->
-    rebar_api:debug("\t\tStarting dotlfe_compile/3 ...", []),
+    rebar_api:debug("\t\tEntered dotlfe_compile/3 ...", []),
     ErlOpts = rebar_utils:erl_opts(State),
     LfeFirstFiles = check_files(rebar_state:get(State, lfe_first_files, [])),
     dotlfe_compile(State, Dir, OutDir, [], ErlOpts, LfeFirstFiles).
 
 dotlfe_compile(State, Dir, OutDir, MoreSources, ErlOpts, LfeFirstFiles) ->
-    rebar_api:debug("\t\tStarting dotlfe_compile/6 ...", []),
-    rebar_api:debug("\t\terl_opts ~p", [ErlOpts]),
+    rebar_api:debug("\t\tEntered dotlfe_compile/6 ...", []),
+    rebar_api:debug("\t\tDir: ~p~n\t\tOutDir: ~p", [Dir, OutDir]),
+    rebar_api:debug("\t\tErlOpts: ~p", [ErlOpts]),
+    rebar_api:debug("\t\tLfeFirstFiles: ~p", [LfeFirstFiles]),
     %% Support the src_dirs option allowing multiple directories to
     %% contain erlang source. This might be used, for example, should
     %% eunit tests be separated from the core application source.
     SrcDirs = [filename:join(Dir, X) || X <- rebar_dir:all_src_dirs(State, ["src"], [])],
+    SrcDirs2 = [filename:join(Dir, X) || X <- rebar_dir:all_src_dirs(State, [""], [])],
+    rebar_api:debug("\t\tSrcDirs: ~p", [SrcDirs]),
+    rebar_api:debug("\t\tSrcDirs2: ~p", [SrcDirs2]),
     AllLfeFiles = gather_src(SrcDirs, []) ++ MoreSources,
-
+    rebar_api:debug("\t\tAllLfeFile2: ~p", [AllLfeFiles]),
     %% Make sure that ebin/ exists and is on the path
     ok = filelib:ensure_dir(filename:join(OutDir, "dummy.beam")),
     true = code:add_patha(filename:absname(OutDir)),

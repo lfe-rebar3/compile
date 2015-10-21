@@ -46,7 +46,6 @@ do(State) ->
                       [AppInfo]
               end,
     [begin
-         rebar_api:debug("AppInfo: ~p", [AppInfo]),
          Opts = rebar_app_info:opts(AppInfo),
          OutDir = rebar_app_info:out_dir(AppInfo),
          AppInfoDir = rebar_app_info:dir(AppInfo),
@@ -57,10 +56,8 @@ do(State) ->
          CompileFun = fun(Source, Opts1) ->
                               lfe_compiler:compile(Opts1, Source, OutDir)
                       end,
-
          rebar_base_compiler:run(Opts, [], FoundFiles, CompileFun)
      end || AppInfo <- Apps],
-
     {ok, State}.
 
 format_error({missing_artifact, File}) ->
