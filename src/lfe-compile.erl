@@ -87,7 +87,7 @@ info(Description) ->
 
 get_files(First, Dirs) ->
     rebar_api:debug("Dirs: ~p", [Dirs]),
-    Files = lists:flatten(
+    Files = lists:append(
               [rebar_utils:find_files(Dir, ".*\.lfe\$") || Dir <- Dirs]),
     rebar_api:debug("Files: ~p", [Files]),
     NoDuplicates = lists:subtract(lists:usort(Files), First),
