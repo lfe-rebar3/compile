@@ -92,4 +92,5 @@ get_files(First, Dirs) ->
 
 
 get_src_dirs(AppDir, Dirs) ->
+    rebar_api:debug("Dirs: ~p", Dirs),
     lists:usort([filename:join(AppDir, DirName) || DirName <- Dirs]).
