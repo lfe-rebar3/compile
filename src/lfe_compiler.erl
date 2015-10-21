@@ -13,15 +13,17 @@
 %% ===================================================================
 
 compile(AppInfo) ->
+    rebar_api:debug("\t\tEntered compile/1 ...", []),
     Dir = ec_cnv:to_list(rebar_app_info:out_dir(AppInfo)),
     compile(rebar_app_info:opts(AppInfo), Dir, filename:join([Dir, "ebin"])).
 
 compile(Opts, Source, OutDir) ->
+    rebar_api:debug("\t\tEntered compile/3 ...", []),
     ErlOpts = rebar_opts:erl_opts(Opts),
     compile(Opts, Source, OutDir, ErlOpts).
 
 compile(Opts, Source, OutDir, ErlOpts) ->
-    rebar_api:debug("\t\tEntered dotlfe_compile/6 ...", []),
+    rebar_api:debug("\t\tEntered compile/4 ...", []),
     rebar_api:debug("\t\tSource: ~p~n\t\tOutDir: ~p", [Source, OutDir]),
     rebar_api:debug("\t\tErlOpts: ~p", [ErlOpts]),
     %% Make sure that ebin/ exists and is on the path

@@ -47,13 +47,16 @@ do(State) ->
               end,
     [begin
          Opts = rebar_app_info:opts(AppInfo),
-         OutDir = rebar_app_info:out_dir(AppInfo),
          AppInfoDir = rebar_app_info:dir(AppInfo),
-         rebar_api:debug("AppInfoDir: ~p", [AppInfoDir]),
          SourceDir = filename:join(AppInfoDir, "src"),
-         rebar_api:debug("SourceDir: ~p", [SourceDir]),
+         OutDir = rebar_app_info:out_dir(AppInfo),
          FirstFiles = rebar_opts:get(Opts, lfe_first_files, []),
          FoundFiles = rebar_utils:find_files(SourceDir, ".*\\.lfe\$"),
+         rebar_api:debug("AppInfoDir: ~p", [AppInfoDir]),
+         rebar_api:debug("SourceDir: ~p", [SourceDir]),
+         rebar_api:debug("OutDir: ~p", [OutDir]),
+         rebar_api:debug("FirstFiles: ~p", [FirstFiles]),
+         rebar_api:debug("FoundFiles: ~p", [FoundFiles]),
          CompileFun = fun(Source, Opts1) ->
                               lfe_compiler:compile(Opts1, Source, OutDir)
                       end,
