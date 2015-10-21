@@ -27,16 +27,16 @@ compile(Opts, Source, AppDir, OutDir, ErlOpts) ->
     ok = filelib:ensure_dir(filename:join(OutDir, "dummy.beam")),
     true = code:add_patha(filename:absname(OutDir)),
     rebar_api:debug("\t\tCompiling~n\t\t\t~p~n\t\t\tto ~p ...", [Source, Target]),
-    Opts = [{outdir, OutDir}] ++ ErlOpts ++
+    Opts2 = [{outdir, OutDir}] ++ ErlOpts ++
         [{i, include_dir(AppDir)}, return],
-    rebar_api:debug("\t\tOpts: ~p", [Opts]),
-    case lfe_comp:file(Source, Opts) of
+    rebar_api:debug("\t\tOpts: ~p", [Opts2]),
+    case lfe_comp:file(Source, Opts2) of
         {ok, _Mod} ->
             ok;
         {ok, _Mod, Ws} ->
-            rebar_base_compiler:ok_tuple(Opts, Source, Ws);
+            rebar_base_compiler:ok_tuple(Opts2, Source, Ws);
         {error, Es, Ws} ->
-            rebar_base_compiler:error_tuple(Opts, Source, Es, Ws, Opts)
+            rebar_base_compiler:error_tuple(Opts2, Source, Es, Ws, Opts)
     end.
 
 %% ===================================================================
