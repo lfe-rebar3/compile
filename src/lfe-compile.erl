@@ -20,7 +20,7 @@
 %% Public API
 %% ===================================================================
 init(State) ->
-    rebar_api:debug("Initializing {lfe, compile} ...", []), %% XXX DEBUG
+    rebar_api:debug("Initializing {lfe, compile} ...", []),
     Provider = providers:create([
             {name, compile},
             {module, ?MODULE},
@@ -33,7 +33,7 @@ init(State) ->
             {opts, []}
     ]),
     State1 = rebar_state:add_provider(State, Provider),
-    rebar_api:debug("Initialized {lfe, compile} ...", []), %% XXX DEBUG
+    rebar_api:debug("Initialized {lfe, compile} ...", []),
     {ok, State1}.
 
 do(State) ->
