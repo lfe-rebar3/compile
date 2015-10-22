@@ -37,9 +37,9 @@ compile(State, Source, AppDir, OutDir, ErlOpts) ->
         {ok, _Mod} ->
             ok;
         {ok, _Mod, Ws} ->
-            rebar_base_compiler:ok_tuple(State, Source, Ws);
+            rebar_base_compiler:ok_tuple(Source, Ws);
         {error, Es, Ws} ->
-            rebar_base_compiler:error_tuple(State, Source, Es, Ws, Opts)
+            rebar_base_compiler:error_tuple(Source, Es, Ws, Opts)
     end.
 
 %% ===================================================================
