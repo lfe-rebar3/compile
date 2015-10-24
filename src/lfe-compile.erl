@@ -51,10 +51,10 @@ do(State) ->
          code:add_patha(AppDir),
          OtherSrcDirs = rebar_dir:src_dirs(Opts),
          rebar_api:debug("OtherSrcDirs: ~p", [OtherSrcDirs]),
-         SourceDirs = get_src_dirs(AppDir, ["src"] ++ OtherSrcDirs),
-         OutDir = filename:join(rebar_app_info:out_dir(AppInfo), "ebin"),
-         FirstFiles = get_first_files(Opts, AppDir),
-         Files = get_files(FirstFiles, SourceDirs),
+         SourceDirs = lfe_compiler:get_src_dirs(AppDir, ["src"] ++ OtherSrcDirs),
+         OutDir = lfe_compiler:out_dir(AppDir),
+         FirstFiles = lfe_compiler:get_first_files(Opts, AppDir),
+         Files = lfe_compiler:get_files(FirstFiles, SourceDirs),
          rebar_api:debug("AppInfoDir: ~p", [AppDir]),
          rebar_api:debug("SourceDirs: ~p", [SourceDirs]),
          rebar_api:debug("OutDir: ~p", [OutDir]),
@@ -85,19 +85,3 @@ info(Description) ->
         "LFE. For more information, see the rebar documentation for~n"
         "'erl_opts'.~n",
         [Description]).
-
-get_first_files(Opts, AppDir) ->
-    Dirs = rebar_opts:get(Opts, lfe_first_files, []),
-    [filename:join(AppDir, Dir) || Dir <- Dirs].
-
-get_files(First, Dirs) ->
-    rebar_api:debug("Dirs: ~p", [Dirs]),
-    Files = lists:append(
-              [rebar_utils:find_files(Dir, ".*\.lfe\$") || Dir <- Dirs]),
-    rebar_api:debug("Files: ~p", [Files]),
-    NoDuplicates = lists:subtract(lists:usort(Files), First),
-    First ++ NoDuplicates.
-
-get_src_dirs(AppDir, Dirs) ->
-    rebar_api:debug("Dirs: ~p", [Dirs]),
-    lists:usort([filename:join(AppDir, DirName) || DirName <- Dirs]).
