@@ -17,8 +17,8 @@ compile(State, Source, AppDir, OutDir) ->
     ErlOpts = rebar_opts:erl_opts(State),
     compile(State, Source, AppDir, OutDir, ErlOpts).
 
-compile(State, Source, AppDir, OutDir, ErlOpts) ->
-    Target = target_file(OutDir, Source),
+compile(_State, Source, _AppDir, OutDir, ErlOpts) ->
+    Target = lfe_compiler_util:target_file(OutDir, Source),
     rebar_api:debug("\t\tEntered compile/4 ...", []),
     rebar_api:debug("\t\tSource: ~p~n\t\tOutDir: ~p", [Source, OutDir]),
     rebar_api:debug("\t\tErlOpts: ~p", [ErlOpts]),
@@ -28,7 +28,7 @@ compile(State, Source, AppDir, OutDir, ErlOpts) ->
     true = code:add_patha(filename:absname(OutDir)),
     rebar_api:debug("\t\tCompiling~n\t\t\t~p~n\t\t\tto ~p ...", [Source, Target]),
     Opts = [{outdir, OutDir}] ++ ErlOpts ++
-       [{i, include_dir()}, return, verbose],
+       [{i, lfe_compiler_util:include_dir()}, return, verbose],
        %%[return, verbose],
     rebar_api:debug("\t\tOpts: ~p", [Opts]),
     CompileResults = lfe_comp:file(Source, Opts),
@@ -42,40 +42,6 @@ compile(State, Source, AppDir, OutDir, ErlOpts) ->
             rebar_base_compiler:error_tuple(Source, Es, Ws, Opts)
     end.
 
-%% ===================================================================
-%% Internal functions
-%% ===================================================================
 
-target_file(OutDir, Source) ->
-    target_base(OutDir, Source) ++ ".beam".
 
-target_base(OutDir, Source) ->
-    filename:join(OutDir, filename:basename(Source, ".lfe")).
 
-out_dir() ->
-    "ebin".
-
-out_dir(AppDir) ->
-    filename:join(AppDir, "ebin").
-
-include_dir() ->
-    "include".
-
-include_dir(AppDir) ->
-    filename:join(AppDir, "include").
-
-get_first_files(Opts, AppDir) ->
-    Dirs = rebar_opts:get(Opts, lfe_first_files, []),
-    [filename:join(AppDir, Dir) || Dir <- Dirs].
-
-get_files(First, Dirs) ->
-    rebar_api:debug("Dirs: ~p", [Dirs]),
-    Files = lists:append(
-              [rebar_utils:find_files(Dir, ".*\.lfe\$") || Dir <- Dirs]),
-    rebar_api:debug("Files: ~p", [Files]),
-    NoDuplicates = lists:subtract(lists:usort(Files), First),
-    First ++ NoDuplicates.
-
-get_src_dirs(AppDir, Dirs) ->
-    rebar_api:debug("Dirs: ~p", [Dirs]),
-    lists:usort([filename:join(AppDir, DirName) || DirName <- Dirs]).
