@@ -13,8 +13,7 @@
 
 -define(NAMESPACE, lfe).
 -define(DESC, "The LFE rebar3 compiler plugin").
--define(DEPS, [{default, compile},
-               {default, app_discovery}]).
+-define(DEPS, [{default, app_discovery}]).
 
 
 %% ===================================================================
@@ -48,11 +47,11 @@ do(State) ->
     [begin
          Opts = rebar_app_info:opts(AppInfo),
          AppDir = rebar_app_info:dir(AppInfo),
-         code:add_patha(AppDir),
          OtherSrcDirs = rebar_dir:src_dirs(Opts),
          rebar_api:debug("OtherSrcDirs: ~p", [OtherSrcDirs]),
          SourceDirs = lfe_compiler_util:get_src_dirs(AppDir, ["src"] ++ OtherSrcDirs),
-         OutDir = lfe_compiler_util:out_dir(AppDir),
+         %%OutDir = lfe_compiler_util:out_dir(AppDir),
+         OutDir = filename:join(rebar_app_info:out_dir(AppInfo), "ebin"),
          FirstFiles = lfe_compiler_util:get_first_files(Opts, AppDir),
          Files = lfe_compiler_util:get_files(FirstFiles, SourceDirs),
          rebar_api:debug("AppInfoDir: ~p", [AppDir]),
@@ -60,10 +59,13 @@ do(State) ->
          rebar_api:debug("OutDir: ~p", [OutDir]),
          rebar_api:debug("FirstFiles: ~p", [FirstFiles]),
          rebar_api:debug("Files: ~p", [Files]),
+         %%code:add_patha(AppDir),
          CompileFun = fun(Source, Opts1) ->
                               lfe_compiler:compile(Opts1, Source, AppDir, OutDir)
                       end,
-         rebar_base_compiler:run(Opts, [], Files, CompileFun)
+         rebar_base_compiler:run(Opts, [], Files, CompileFun),
+         AppFile = rebar_app_utils:app_src_to_app(OutDir, AppSrcFile),
+         rebar_api:debug("AppFile: ~p", [AppFile])
      end || AppInfo <- Apps],
     {ok, State}.
 
