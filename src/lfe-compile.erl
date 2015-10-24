@@ -64,6 +64,7 @@ do(State) ->
                               lfe_compiler:compile(Opts1, Source, AppDir, OutDir)
                       end,
          rebar_base_compiler:run(Opts, [], Files, CompileFun),
+         AppSrcFile = rebar_app_info:app_file_src(AppInfo),
          AppFile = rebar_app_utils:app_src_to_app(OutDir, AppSrcFile),
          rebar_api:debug("AppFile: ~p", [AppFile])
      end || AppInfo <- Apps],
