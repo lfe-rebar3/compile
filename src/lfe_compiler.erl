@@ -6,11 +6,19 @@
 
 -include("const.hrl").
 
--export([compile/4, compile/5]).
+-export([copy_app_src/1, compile/4, compile/5]).
 
 %% ===================================================================
 %% Public API
 %% ===================================================================
+
+copy_app_src(AppInfo) ->
+    AppDir = rebar_app_info:dir(AppInfo),
+    AppSrcFile = rebar_app_info:app_file_src(AppInfo),
+    AppFile = rebar_app_utils:app_src_to_app(AppDir, AppSrcFile),
+    rebar_api:debug("AppSrcFile: ~p", [AppSrcFile]),
+    rebar_api:debug("AppFile: ~p", [AppFile]),
+    file:copy(AppSrcFile, AppFile).
 
 compile(State, Source, AppDir, OutDir) ->
     rebar_api:debug("\t\tEntered compile/3 ...", []),
@@ -29,7 +37,6 @@ compile(_State, Source, _AppDir, OutDir, ErlOpts) ->
     rebar_api:debug("\t\tCompiling~n\t\t\t~p~n\t\t\tto ~p ...", [Source, Target]),
     Opts = [{outdir, OutDir}] ++ ErlOpts ++
        [{i, lfe_compiler_util:include_dir()}, return, verbose],
-       %%[return, verbose],
     rebar_api:debug("\t\tOpts: ~p", [Opts]),
     CompileResults = lfe_comp:file(Source, Opts),
     rebar_api:debug("Compile results: ~p", [CompileResults]),
