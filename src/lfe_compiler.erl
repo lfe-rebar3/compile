@@ -13,12 +13,17 @@
 %% ===================================================================
 
 copy_app_src(AppInfo) ->
+    rebar_api:debug("\t\tEntered copy_app_src/1 ...", []),
     AppDir = rebar_app_info:dir(AppInfo),
     AppSrcFile = rebar_app_info:app_file_src(AppInfo),
     AppFile = rebar_app_utils:app_src_to_app(AppDir, AppSrcFile),
-    rebar_api:debug("AppSrcFile: ~p", [AppSrcFile]),
-    rebar_api:debug("AppFile: ~p", [AppFile]),
-    file:copy(AppSrcFile, AppFile).
+    rebar_api:debug("\t\tCopying ~p to ~p ...", [AppSrcFile, AppFile]),
+    case file:copy(AppSrcFile, AppFile) of
+        {ok, BytesCopied} ->
+            rebar_api:debug("\t\tCopied ~p bytes.", [BytesCopied]);
+        {error, Reason} ->
+            rebar_api:error("\t\tFailed to copy ~p: ~p", [AppSrcFile, Reason])
+    end.
 
 compile(State, Source, AppDir, OutDir) ->
     rebar_api:debug("\t\tEntered compile/3 ...", []),
