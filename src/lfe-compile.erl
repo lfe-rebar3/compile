@@ -47,6 +47,10 @@ do(State) ->
     [begin
          Opts = rebar_app_info:opts(AppInfo),
          AppDir = rebar_app_info:dir(AppInfo),
+         AppSrcFile = rebar_app_info:app_file_src(AppInfo),
+         AppFile = rebar_app_utils:app_src_to_app(AppDir, AppSrcFile),
+         rebar_api:debug("AppSrcFile: ~p", [AppSrcFile]),
+         rebar_api:debug("AppFile: ~p", [AppFile]),
          OtherSrcDirs = rebar_dir:src_dirs(Opts),
          rebar_api:debug("OtherSrcDirs: ~p", [OtherSrcDirs]),
          SourceDirs = lfe_compiler_util:get_src_dirs(AppDir, ["src"] ++ OtherSrcDirs),
@@ -63,10 +67,7 @@ do(State) ->
          CompileFun = fun(Source, Opts1) ->
                               lfe_compiler:compile(Opts1, Source, AppDir, OutDir)
                       end,
-         rebar_base_compiler:run(Opts, [], Files, CompileFun),
-         AppSrcFile = rebar_app_info:app_file_src(AppInfo),
-         AppFile = rebar_app_utils:app_src_to_app(OutDir, AppSrcFile),
-         rebar_api:debug("AppFile: ~p", [AppFile])
+         rebar_base_compiler:run(Opts, [], Files, CompileFun)
      end || AppInfo <- Apps],
     {ok, State}.
 
