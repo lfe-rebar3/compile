@@ -38,7 +38,7 @@ init(State) ->
 
 do(State) ->
     rebar_api:debug("Starting do/1 for {lfe, compile} ...", []),
-    rebar_api:console("~~~> Compiling .lfe files ...", []),
+    rebar_api:console("~~~~~~> Compiling .lfe files ...", []),
     Apps = case rebar_state:current_app(State) of
                   undefined ->
                       rebar_state:project_apps(State);
