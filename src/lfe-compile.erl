@@ -62,8 +62,9 @@ do(State) ->
          rebar_api:debug("FirstFiles: ~p", [FirstFiles]),
          rebar_api:debug("Files: ~p", [Files]),
          CompileFun = fun(Source, Opts1) ->
-                              rebar_api:console("~~~~~~> \tCompiling ~p ...", [Source]),
-                              lfe_compiler:compile(Opts1, Source, AppDir, OutDir)
+                        rebar_api:console("~~~~~~> \tCompiling ~p ...",
+                                          [lfe_compiler_util:relative(Source)]),
+                        lfe_compiler:compile(Opts1, Source, AppDir, OutDir)
                       end,
          rebar_base_compiler:run(Opts, [], Files, CompileFun)
      end || AppInfo <- Apps],

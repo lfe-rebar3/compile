@@ -6,7 +6,8 @@
          get_files/2,
          get_src_dirs/2,
          target_file/2,
-         target_base/2]).
+         target_base/2,
+         relative/1]).
 
 out_dir() ->
     "ebin".
@@ -41,3 +42,7 @@ target_file(OutDir, Source) ->
 
 target_base(OutDir, Source) ->
     filename:join(OutDir, filename:basename(Source, ".lfe")).
+
+relative(Filename) ->
+    {ok, Cwd} = file:get_cwd(),
+    re:replace(Filename, Cwd, ".", [{return,list}]).
