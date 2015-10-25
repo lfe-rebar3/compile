@@ -38,7 +38,7 @@ init(State) ->
 
 do(State) ->
     rebar_api:debug("Starting do/1 for {lfe, compile} ...", []),
-    rebar_api:console("~~~~~~> Compiling .lfe files ...", []),
+    rebar_api:console("~~~~~~> \tFinding .lfe files ...", []),
     Apps = case rebar_state:current_app(State) of
                   undefined ->
                       rebar_state:project_apps(State);
@@ -62,6 +62,7 @@ do(State) ->
          rebar_api:debug("FirstFiles: ~p", [FirstFiles]),
          rebar_api:debug("Files: ~p", [Files]),
          CompileFun = fun(Source, Opts1) ->
+                              rebar_api:console("~~~~~~> \tCompiling ~p ...", [Source]),
                               lfe_compiler:compile(Opts1, Source, AppDir, OutDir)
                       end,
          rebar_base_compiler:run(Opts, [], Files, CompileFun)
