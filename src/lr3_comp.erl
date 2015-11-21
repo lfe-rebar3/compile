@@ -2,9 +2,9 @@
 %%                     Tim Dysinger <tim@dysinger.net>
 %% Copyright (c) 2014, 2015 Duncan McGreggor <oubiwann@gmail.com>
 %%
--module(lferb3_comp).
+-module(lr3_comp).
 
--include("lferb3_const.hrl").
+-include("lr3_const.hrl").
 
 -export([compile/4, compile/5]).
 
@@ -18,7 +18,7 @@ compile(State, Source, AppDir, OutDir) ->
     compile(State, Source, AppDir, OutDir, ErlOpts).
 
 compile(_State, Source, _AppDir, OutDir, ErlOpts) ->
-    Target = lferb3_comp_util:target_file(OutDir, Source),
+    Target = lr3_comp_util:target_file(OutDir, Source),
     rebar_api:debug("\t\tEntered compile/4 ...", []),
     rebar_api:debug("\t\tSource: ~p~n\t\tOutDir: ~p", [Source, OutDir]),
     rebar_api:debug("\t\tErlOpts: ~p", [ErlOpts]),
@@ -28,7 +28,7 @@ compile(_State, Source, _AppDir, OutDir, ErlOpts) ->
     true = code:add_patha(filename:absname(OutDir)),
     rebar_api:debug("\t\tCompiling~n\t\t\t~p~n\t\t\tto ~p ...", [Source, Target]),
     Opts = [{outdir, OutDir}] ++ ErlOpts ++
-       [{i, lferb3_comp_util:include_dir()}, return, verbose],
+       [{i, lr3_comp_util:include_dir()}, return, verbose],
     rebar_api:debug("\t\tOpts: ~p", [Opts]),
     CompileResults = lfe_comp:file(Source, Opts),
     rebar_api:debug("Compile results: ~p", [CompileResults]),

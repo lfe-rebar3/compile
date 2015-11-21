@@ -1,4 +1,4 @@
--module(lferb3_comp_util).
+-module(lr3_comp_util).
 
 -export([copy_app_src/1,
          out_dir/0, out_dir/1,

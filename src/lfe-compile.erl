@@ -46,16 +46,16 @@ do(State) ->
                       [AppInfo]
               end,
     [begin
-         lferb3_comp_util:copy_app_src(AppInfo),
+         lr3_comp_util:copy_app_src(AppInfo),
          Opts = rebar_app_info:opts(AppInfo),
          AppDir = rebar_app_info:dir(AppInfo),
          OtherSrcDirs = rebar_dir:src_dirs(Opts),
          rebar_api:debug("OtherSrcDirs: ~p", [OtherSrcDirs]),
-         SourceDirs = lferb3_comp_util:get_src_dirs(AppDir, ["src"] ++ OtherSrcDirs),
+         SourceDirs = lr3_comp_util:get_src_dirs(AppDir, ["src"] ++ OtherSrcDirs),
          %%OutDir = 'lfe-compiler-util':out_dir(AppDir),
          OutDir = filename:join(rebar_app_info:out_dir(AppInfo), "ebin"),
-         FirstFiles = lferb3_comp_util:get_first_files(Opts, AppDir),
-         Files = lferb3_comp_util:get_files(FirstFiles, SourceDirs),
+         FirstFiles = lr3_comp_util:get_first_files(Opts, AppDir),
+         Files = lr3_comp_util:get_files(FirstFiles, SourceDirs),
          rebar_api:debug("AppInfoDir: ~p", [AppDir]),
          rebar_api:debug("SourceDirs: ~p", [SourceDirs]),
          rebar_api:debug("OutDir: ~p", [OutDir]),
@@ -63,8 +63,8 @@ do(State) ->
          rebar_api:debug("Files: ~p", [Files]),
          CompileFun = fun(Source, Opts1) ->
                         rebar_api:console("~~~~~~> \tCompiling ~s ...",
-                                          [lferb3_comp_util:relative(Source)]),
-                        lferb3_comp:compile(Opts1, Source, AppDir, OutDir)
+                                          [lr3_comp_util:relative(Source)]),
+                        lr3_comp:compile(Opts1, Source, AppDir, OutDir)
                       end,
          rebar_base_compiler:run(Opts, [], Files, CompileFun)
      end || AppInfo <- Apps],
