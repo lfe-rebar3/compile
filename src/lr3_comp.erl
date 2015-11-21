@@ -43,7 +43,7 @@ compile(_State, Source, _AppDir, OutDir, ErlOpts) ->
     end.
 
 compile_normal_apps(State, Apps) ->
-    rebar_api:debug("Compiling normal LFE apps ...")
+    rebar_api:debug("Compiling normal LFE apps ..."),
     [begin
          lr3_comp_util:copy_app_src(AppInfo),
          Opts = rebar_app_info:opts(AppInfo),
