@@ -3,6 +3,7 @@
 -export([copy_app_src/1,
          out_dir/0, out_dir/1,
          include_dir/0, include_dir/1,
+         get_apps/1,
          get_first_files/2,
          get_files/2,
          get_src_dirs/2,
@@ -34,6 +35,16 @@ include_dir() ->
 
 include_dir(AppDir) ->
     filename:join(AppDir, "include").
+
+get_apps(State) ->
+    case rebar_state:current_app(State) of
+           undefined ->
+             rebar_api:debug("Current app state is undefined ..."),
+             rebar_state:project_apps(State);
+           AppInfo ->
+             rebar_api:debug("Converting current app state to list ..."),
+             [AppInfo]
+    end.
 
 get_first_files(Opts, AppDir) ->
     Dirs = rebar_opts:get(Opts, lfe_first_files, []),

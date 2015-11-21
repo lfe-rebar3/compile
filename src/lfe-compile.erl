@@ -41,15 +41,7 @@ do(State) ->
     rebar_api:console("~~~~~~> \tFinding .lfe files ...",[]),
     rebar_api:debug("Where is the rebar_state module? ~p",
                     [code:where_is_file("rebar_state.beam")]),
-    Apps = case rebar_state:current_app(State) of
-                  undefined ->
-                      rebar_api:debug("Current app state is undefined ..."),
-                      rebar_state:project_apps(State);
-                  AppInfo ->
-                      rebar_api:debug("Converting current app state to list ..."),
-                      [AppInfo]
-           end,
-    lr3_comp:compile_normal_apps(State, Apps).
+    lr3_comp:compile_normal_apps(State).
 
 format_error({missing_artifact, File}) ->
     io_lib:format("Missing artifact ~s", [File]);

@@ -7,7 +7,7 @@
 -include("lr3_const.hrl").
 
 -export([compile/4, compile/5,
-         compile_normal_apps/2]).
+         compile_normal_apps/1]).
 
 %% ===================================================================
 %% Public API
@@ -42,8 +42,9 @@ compile(_State, Source, _AppDir, OutDir, ErlOpts) ->
             rebar_base_compiler:error_tuple(Source, Es, Ws, Opts)
     end.
 
-compile_normal_apps(State, Apps) ->
+compile_normal_apps(State) ->
     rebar_api:debug("Compiling normal LFE apps ..."),
+    Apps = lr3_comp_util:get_apps(State),
     [begin
          lr3_comp_util:copy_app_src(AppInfo),
          Opts = rebar_app_info:opts(AppInfo),
