@@ -41,10 +41,10 @@ do(State) ->
     rebar_api:console("~~~~~~> \tFinding .lfe files ...", []),
     Apps = case rebar_state:current_app(State) of
                   undefined ->
-                      rebar_api:debug("Current app state is undefined ...")
+                      rebar_api:debug("Current app state is undefined ..."),
                       rebar_state:project_apps(State);
                   AppInfo ->
-                      rebar_api:debug("Converting current app state to list ...")
+                      rebar_api:debug("Converting current app state to list ..."),
                       [AppInfo]
            end,
     lr3_comp:compile_normal_apps(State, Apps).
