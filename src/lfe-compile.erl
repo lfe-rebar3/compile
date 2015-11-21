@@ -5,7 +5,7 @@
 -module('lfe-compile').
 -behaviour(provider).
 
--include("lferb3_const.hrl").
+-include("lr3_const.hrl").
 
 -export([init/1,
          do/1,
@@ -13,7 +13,7 @@
 
 -define(NAMESPACE, lfe).
 -define(DESC, "The LFE rebar3 compiler plugin").
--define(DEPS, [{default, app_discovery}]).
+-define(DEPS, []).
 
 
 %% ===================================================================
@@ -41,34 +41,13 @@ do(State) ->
     rebar_api:console("~~~~~~> \tFinding .lfe files ...", []),
     Apps = case rebar_state:current_app(State) of
                   undefined ->
+                      rebar_api:debug("Current app state is undefined ...")
                       rebar_state:project_apps(State);
                   AppInfo ->
+                      rebar_api:debug("Converting current app state to list ...")
                       [AppInfo]
-              end,
-    [begin
-         lr3_comp_util:copy_app_src(AppInfo),
-         Opts = rebar_app_info:opts(AppInfo),
-         AppDir = rebar_app_info:dir(AppInfo),
-         OtherSrcDirs = rebar_dir:src_dirs(Opts),
-         rebar_api:debug("OtherSrcDirs: ~p", [OtherSrcDirs]),
-         SourceDirs = lr3_comp_util:get_src_dirs(AppDir, ["src"] ++ OtherSrcDirs),
-         %%OutDir = 'lfe-compiler-util':out_dir(AppDir),
-         OutDir = filename:join(rebar_app_info:out_dir(AppInfo), "ebin"),
-         FirstFiles = lr3_comp_util:get_first_files(Opts, AppDir),
-         Files = lr3_comp_util:get_files(FirstFiles, SourceDirs),
-         rebar_api:debug("AppInfoDir: ~p", [AppDir]),
-         rebar_api:debug("SourceDirs: ~p", [SourceDirs]),
-         rebar_api:debug("OutDir: ~p", [OutDir]),
-         rebar_api:debug("FirstFiles: ~p", [FirstFiles]),
-         rebar_api:debug("Files: ~p", [Files]),
-         CompileFun = fun(Source, Opts1) ->
-                        rebar_api:console("~~~~~~> \tCompiling ~s ...",
-                                          [lr3_comp_util:relative(Source)]),
-                        lr3_comp:compile(Opts1, Source, AppDir, OutDir)
-                      end,
-         rebar_base_compiler:run(Opts, [], Files, CompileFun)
-     end || AppInfo <- Apps],
-    {ok, State}.
+           end,
+    lr3_comp:compile_normal_apps(State, Apps).
 
 format_error({missing_artifact, File}) ->
     io_lib:format("Missing artifact ~s", [File]);
