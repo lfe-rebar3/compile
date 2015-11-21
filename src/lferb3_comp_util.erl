@@ -1,6 +1,7 @@
--module(lfe_compiler_util).
+-module(lferb3_comp_util).
 
--export([out_dir/0, out_dir/1,
+-export([copy_app_src/1,
+         out_dir/0, out_dir/1,
          include_dir/0, include_dir/1,
          get_first_files/2,
          get_files/2,
@@ -8,6 +9,19 @@
          target_file/2,
          target_base/2,
          relative/1]).
+
+copy_app_src(AppInfo) ->
+    rebar_api:debug("\t\tEntered copy_app_src/1 ...", []),
+    AppDir = rebar_app_info:dir(AppInfo),
+    AppSrcFile = rebar_app_info:app_file_src(AppInfo),
+    AppFile = rebar_app_utils:app_src_to_app(AppDir, AppSrcFile),
+    rebar_api:debug("\t\tCopying ~p to ~p ...", [AppSrcFile, AppFile]),
+    case file:copy(AppSrcFile, AppFile) of
+        {ok, BytesCopied} ->
+            rebar_api:debug("\t\tCopied ~p bytes.", [BytesCopied]);
+        {error, Reason} ->
+            rebar_api:error("\t\tFailed to copy ~p: ~p", [AppSrcFile, Reason])
+    end.
 
 out_dir() ->
     "ebin".

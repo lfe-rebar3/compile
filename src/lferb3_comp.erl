@@ -2,28 +2,15 @@
 %%                     Tim Dysinger <tim@dysinger.net>
 %% Copyright (c) 2014, 2015 Duncan McGreggor <oubiwann@gmail.com>
 %%
--module(lfe_compiler).
+-module(lferb3_comp).
 
--include("const.hrl").
+-include("lferb3_const.hrl").
 
--export([copy_app_src/1, compile/4, compile/5]).
+-export([compile/4, compile/5]).
 
 %% ===================================================================
 %% Public API
 %% ===================================================================
-
-copy_app_src(AppInfo) ->
-    rebar_api:debug("\t\tEntered copy_app_src/1 ...", []),
-    AppDir = rebar_app_info:dir(AppInfo),
-    AppSrcFile = rebar_app_info:app_file_src(AppInfo),
-    AppFile = rebar_app_utils:app_src_to_app(AppDir, AppSrcFile),
-    rebar_api:debug("\t\tCopying ~p to ~p ...", [AppSrcFile, AppFile]),
-    case file:copy(AppSrcFile, AppFile) of
-        {ok, BytesCopied} ->
-            rebar_api:debug("\t\tCopied ~p bytes.", [BytesCopied]);
-        {error, Reason} ->
-            rebar_api:error("\t\tFailed to copy ~p: ~p", [AppSrcFile, Reason])
-    end.
 
 compile(State, Source, AppDir, OutDir) ->
     rebar_api:debug("\t\tEntered compile/3 ...", []),
@@ -31,7 +18,7 @@ compile(State, Source, AppDir, OutDir) ->
     compile(State, Source, AppDir, OutDir, ErlOpts).
 
 compile(_State, Source, _AppDir, OutDir, ErlOpts) ->
-    Target = lfe_compiler_util:target_file(OutDir, Source),
+    Target = lferb3_comp_util:target_file(OutDir, Source),
     rebar_api:debug("\t\tEntered compile/4 ...", []),
     rebar_api:debug("\t\tSource: ~p~n\t\tOutDir: ~p", [Source, OutDir]),
     rebar_api:debug("\t\tErlOpts: ~p", [ErlOpts]),
@@ -41,7 +28,7 @@ compile(_State, Source, _AppDir, OutDir, ErlOpts) ->
     true = code:add_patha(filename:absname(OutDir)),
     rebar_api:debug("\t\tCompiling~n\t\t\t~p~n\t\t\tto ~p ...", [Source, Target]),
     Opts = [{outdir, OutDir}] ++ ErlOpts ++
-       [{i, lfe_compiler_util:include_dir()}, return, verbose],
+       [{i, lferb3_comp_util:include_dir()}, return, verbose],
     rebar_api:debug("\t\tOpts: ~p", [Opts]),
     CompileResults = lfe_comp:file(Source, Opts),
     rebar_api:debug("Compile results: ~p", [CompileResults]),

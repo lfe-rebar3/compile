@@ -5,7 +5,7 @@
 -module('lfe-compile').
 -behaviour(provider).
 
--include("const.hrl").
+-include("lferb3_const.hrl").
 
 -export([init/1,
          do/1,
@@ -46,16 +46,16 @@ do(State) ->
                       [AppInfo]
               end,
     [begin
-         lfe_compiler:copy_app_src(AppInfo),
+         lferb3_comp_util:copy_app_src(AppInfo),
          Opts = rebar_app_info:opts(AppInfo),
          AppDir = rebar_app_info:dir(AppInfo),
          OtherSrcDirs = rebar_dir:src_dirs(Opts),
          rebar_api:debug("OtherSrcDirs: ~p", [OtherSrcDirs]),
-         SourceDirs = lfe_compiler_util:get_src_dirs(AppDir, ["src"] ++ OtherSrcDirs),
-         %%OutDir = lfe_compiler_util:out_dir(AppDir),
+         SourceDirs = lferb3_comp_util:get_src_dirs(AppDir, ["src"] ++ OtherSrcDirs),
+         %%OutDir = 'lfe-compiler-util':out_dir(AppDir),
          OutDir = filename:join(rebar_app_info:out_dir(AppInfo), "ebin"),
-         FirstFiles = lfe_compiler_util:get_first_files(Opts, AppDir),
-         Files = lfe_compiler_util:get_files(FirstFiles, SourceDirs),
+         FirstFiles = lferb3_comp_util:get_first_files(Opts, AppDir),
+         Files = lferb3_comp_util:get_files(FirstFiles, SourceDirs),
          rebar_api:debug("AppInfoDir: ~p", [AppDir]),
          rebar_api:debug("SourceDirs: ~p", [SourceDirs]),
          rebar_api:debug("OutDir: ~p", [OutDir]),
@@ -63,8 +63,8 @@ do(State) ->
          rebar_api:debug("Files: ~p", [Files]),
          CompileFun = fun(Source, Opts1) ->
                         rebar_api:console("~~~~~~> \tCompiling ~s ...",
-                                          [lfe_compiler_util:relative(Source)]),
-                        lfe_compiler:compile(Opts1, Source, AppDir, OutDir)
+                                          [lferb3_comp_util:relative(Source)]),
+                        lferb3_comp:compile(Opts1, Source, AppDir, OutDir)
                       end,
          rebar_base_compiler:run(Opts, [], Files, CompileFun)
      end || AppInfo <- Apps],
