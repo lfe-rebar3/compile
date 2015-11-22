@@ -62,7 +62,7 @@ compile_normal_apps(State) ->
          rebar_api:debug("FirstFiles: ~p", [FirstFiles]),
          rebar_api:debug("Files: ~p", [Files]),
          CompileFun = fun(Source, Opts1) ->
-                        rebar_api:console("  ~~~~> \tCompiling ~s ...",
+                        rebar_api:console(" ~~~~> \tCompiling ~s ...",
                                           [lr3_comp_util:relative(Source)]),
                         compile(Opts1, Source, AppDir, OutDir)
                       end,

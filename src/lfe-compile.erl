@@ -38,7 +38,7 @@ init(State) ->
 
 do(State) ->
     rebar_api:debug("Starting do/1 for {lfe, compile} ...", []),
-    rebar_api:console("  ~~~~> \tFinding .lfe files ...",[]),
+    rebar_api:console(" ~~~~> \tFinding .lfe files ...",[]),
     rebar_api:debug("Where is the rebar_state module? ~p",
                     [code:where_is_file("rebar_state.beam")]),
     lr3_comp:compile_normal_apps(State).
