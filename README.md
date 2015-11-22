@@ -2,9 +2,9 @@
 
 *The LFE rebar3 compiler plugin*
 
-[compile-logo]: resources/images/logo.png
+[lr3-logo]: resources/images/logo.png
 
-[![][compile-logo]][compile-logo]
+[![][lr3-logo]][lr3-logo]
 
 
 #### Contents
@@ -33,7 +33,7 @@ tool, see the "Use" section below.
 ## Build [&#x219F;](#contents)
 
 ```bash
-    $ rebar3 compile
+$ rebar3 compile
 ```
 
 
