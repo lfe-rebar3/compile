@@ -17,11 +17,14 @@ copy_app_src(AppInfo) ->
     AppSrcFile = rebar_app_info:app_file_src(AppInfo),
     AppFile = rebar_app_utils:app_src_to_app(AppDir, AppSrcFile),
     rebar_api:debug("\t\tCopying ~p to ~p ...", [AppSrcFile, AppFile]),
-    case file:copy(AppSrcFile, AppFile) of
+    copy_file(AppSrcFile, AppFile).
+
+copy_file(Src, Dst) ->
+    case file:copy(Src, Dst) of
         {ok, BytesCopied} ->
             rebar_api:debug("\t\tCopied ~p bytes.", [BytesCopied]);
         {error, Reason} ->
-            rebar_api:error("\t\tFailed to copy ~p: ~p", [AppSrcFile, Reason])
+            rebar_api:error("\t\tFailed to copy ~p: ~p", [Src, Reason])
     end.
 
 out_dir() ->
@@ -39,10 +42,10 @@ include_dir(AppDir) ->
 get_apps(State) ->
     case rebar_state:current_app(State) of
            undefined ->
-             rebar_api:debug("Current app state is undefined ...", []),
+             rebar_api:debug("\tCurrent app state is undefined ...", []),
              rebar_state:project_apps(State);
            AppInfo ->
-             rebar_api:debug("Converting current app state to list ...", []),
+             rebar_api:debug("\tConverting current app state to list ...", []),
              [AppInfo]
     end.
 
