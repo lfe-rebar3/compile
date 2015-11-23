@@ -8,6 +8,7 @@
          get_first_files/2,
          get_files/2,
          get_src_dirs/2,
+         relative_out_dir/1,
          target_file/2,
          target_base/2,
          relative/1]).
