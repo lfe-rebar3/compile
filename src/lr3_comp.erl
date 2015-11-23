@@ -71,4 +71,7 @@ compile_normal_app(AppInfo) ->
                 end,
     rebar_base_compiler:run(Opts, [], Files, DoCompile),
     rebar_api:debug("\tFinished compile.", []),
-    lr3_comp_util:copy_beam_files(AppInfo, OutDir).
+    lr3_comp_util:copy_beam_files(AppInfo, OutDir),
+    code:add_patha(
+        lr3_comp_util:out_dir(
+            rebar_app_info:dir(AppInfo))).
