@@ -28,7 +28,7 @@ copy_beam_files(AppInfo) ->
 
 copy_beam_file(BeamFile, EbinDir) ->
     Filename = filename:basename(BeamFile),
-    DestFile = filename:join(EbinDir, DestFile),
+    DestFile = filename:join(EbinDir, Filename),
     case BeamFile =:= DestFile of
         true -> rebar_api:debug("\t\tFiles the same; skipping", []);
         false -> copy_file(BeamFile, DestFile)
