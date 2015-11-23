@@ -1,7 +1,7 @@
 -module(lr3_comp_util).
 
 -export([copy_app_src/1,
-         copy_beam_files/1,
+         copy_beam_files/2,
          out_dir/0, out_dir/1,
          include_dir/0, include_dir/1,
          get_apps/1,
