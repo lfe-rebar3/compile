@@ -13,7 +13,7 @@
 
 -define(NAMESPACE, lfe).
 -define(DESC, "The LFE rebar3 compiler plugin").
--define(DEPS, [lock]).
+-define(DEPS, [{default, lock}]).
 
 
 %% ===================================================================
