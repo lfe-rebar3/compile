@@ -69,4 +69,5 @@ compile_normal_app(AppInfo) ->
                                      [lr3_comp_util:relative(Source)]),
                    compile(Opts1, Source, AppDir, OutDir)
                  end,
-    rebar_base_compiler:run(Opts, [], Files, CompileFun).
+    rebar_base_compiler:run(Opts, [], Files, CompileFun),
+    lr3_comp_util:copy_beam_files(AppInfo).
