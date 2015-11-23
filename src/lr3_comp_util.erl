@@ -18,6 +18,9 @@ copy_app_src(AppInfo) ->
     AppDir = rebar_app_info:dir(AppInfo),
     AppSrcFile = rebar_app_info:app_file_src(AppInfo),
     AppFile = rebar_app_utils:app_src_to_app(AppDir, AppSrcFile),
+    rebar_api:debug("\t\tAppDir: ~p", [AppDir]),
+    rebar_api:debug("\t\tAppSrcFile: ~p", [AppSrcFile]),
+    rebar_api:debug("\t\tAppFile: ~p", [AppFile]),
     rebar_api:debug("\t\tCopying ~p to ~p ...", [AppSrcFile, AppFile]),
     copy_file(AppSrcFile, AppFile).
 
