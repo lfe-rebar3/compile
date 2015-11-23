@@ -19,6 +19,21 @@ copy_app_src(AppInfo) ->
     rebar_api:debug("\t\tCopying ~p to ~p ...", [AppSrcFile, AppFile]),
     copy_file(AppSrcFile, AppFile).
 
+copy_beam_files(AppInfo) ->
+    rebar_api:debug("\t\tEntered copy_beam_files/1 ...", []),
+    EbinDir = out_dir(rebar_app_info:dir(AppInfo)),
+    BeamFiles = filelib:wildcard(filename:join(EbinDir, "*")),
+    rebar_api:debug("\t\tCopying ~p to ~p ...", [BeamFiles, EbinDir]),
+    [copy_beam_file(BeamFile, EbinDir) || BeamFile <- BeamFiles].
+
+copy_beam_file(BeamFile, EbinDir) ->
+    Filename = filename:basename(BeamFile),
+    DestFile = filename:join(EbinDir, DestFile),
+    case BeamFile =:= DestFile of
+        true -> rebar_api:debug("\t\tFiles the same; skipping", []);
+        false -> copy_file(BeamFile, DestFile)
+    end.
+
 copy_file(Src, Dst) ->
     case file:copy(Src, Dst) of
         {ok, BytesCopied} ->
@@ -32,6 +47,9 @@ out_dir() ->
 
 out_dir(AppDir) ->
     filename:join(AppDir, "ebin").
+
+relative_out_dir(AppInfo) ->
+    filename:join(rebar_app_info:out_dir(AppInfo), "ebin").
 
 include_dir() ->
     "include".

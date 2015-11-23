@@ -56,7 +56,7 @@ compile_normal_app(AppInfo) ->
     rebar_api:debug("\tOtherSrcDirs: ~p", [OtherSrcDirs]),
     SourceDirs = lr3_comp_util:get_src_dirs(AppDir, ["src"] ++ OtherSrcDirs),
     %%OutDir = 'lfe-compiler-util':out_dir(AppDir),
-    OutDir = filename:join(rebar_app_info:out_dir(AppInfo), "ebin"),
+    OutDir = lr3_comp_util:relative_out_dir(AppInfo),
     FirstFiles = lr3_comp_util:get_first_files(Opts, AppDir),
     Files = lr3_comp_util:get_files(FirstFiles, SourceDirs),
     rebar_api:debug("\tAppInfoDir: ~p", [AppDir]),
