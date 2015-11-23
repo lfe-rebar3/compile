@@ -21,9 +21,8 @@ copy_app_src(AppInfo) ->
     rebar_api:debug("\t\tCopying ~p to ~p ...", [AppSrcFile, AppFile]),
     copy_file(AppSrcFile, AppFile).
 
-copy_beam_files(AppInfo) ->
+copy_beam_files(AppInfo, EbinDir) ->
     rebar_api:debug("\t\tEntered copy_beam_files/1 ...", []),
-    EbinDir = out_dir(rebar_app_info:dir(AppInfo)),
     BeamFiles = filelib:wildcard(filename:join(EbinDir, "*")),
     rebar_api:debug("\t\tCopying ~p to ~p ...", [BeamFiles, EbinDir]),
     [copy_beam_file(BeamFile, EbinDir) || BeamFile <- BeamFiles].
