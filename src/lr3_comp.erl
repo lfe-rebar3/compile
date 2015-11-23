@@ -32,7 +32,7 @@ compile(_State, Source, _AppDir, OutDir, ErlOpts) ->
        [{i, lr3_comp_util:include_dir()}, return, verbose],
     rebar_api:debug("\t\tOpts: ~p", [Opts]),
     CompileResults = lfe_comp:file(Source, Opts),
-    rebar_api:debug("Compile results: ~p", [CompileResults]),
+    rebar_api:debug("\tCompile results: ~p", [CompileResults]),
     case CompileResults of
         {ok, _Mod} ->
             ok;
@@ -64,10 +64,11 @@ compile_normal_app(AppInfo) ->
     rebar_api:debug("\tOutDir: ~p", [OutDir]),
     rebar_api:debug("\tFirstFiles: ~p", [FirstFiles]),
     rebar_api:debug("\tFiles: ~p", [Files]),
-    CompileFun = fun(Source, Opts1) ->
-                   rebar_api:console(" ~~~~> \tCompiling ~s ...",
-                                     [lr3_comp_util:relative(Source)]),
-                   compile(Opts1, Source, AppDir, OutDir)
-                 end,
-    rebar_base_compiler:run(Opts, [], Files, CompileFun),
+    DoCompile = fun(Source, Opts1) ->
+                  rebar_api:console(" ~~~~> \tCompiling ~s ...",
+                                    [lr3_comp_util:relative(Source)]),
+                  compile(Opts1, Source, AppDir, OutDir)
+                end,
+    rebar_base_compiler:run(Opts, [], Files, DoCompile),
+    rebar_api:debug("\tFinished compile.", []),
     lr3_comp_util:copy_beam_files(AppInfo).

@@ -74,15 +74,15 @@ get_first_files(Opts, AppDir) ->
     [filename:join(AppDir, Dir) || Dir <- Dirs].
 
 get_files(First, Dirs) ->
-    rebar_api:debug("Dirs: ~p", [Dirs]),
+    rebar_api:debug("\tDirs: ~p", [Dirs]),
     Files = lists:append(
               [rebar_utils:find_files(Dir, ".*\.lfe\$") || Dir <- Dirs]),
-    rebar_api:debug("Files: ~p", [Files]),
+    rebar_api:debug("\tFiles: ~p", [Files]),
     NoDuplicates = lists:subtract(lists:usort(Files), First),
     First ++ NoDuplicates.
 
 get_src_dirs(AppDir, Dirs) ->
-    rebar_api:debug("Dirs: ~p", [Dirs]),
+    rebar_api:debug("\tDirs: ~p", [Dirs]),
     lists:usort([filename:join(AppDir, DirName) || DirName <- Dirs]).
 
 target_file(OutDir, Source) ->
