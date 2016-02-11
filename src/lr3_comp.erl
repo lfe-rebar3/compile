@@ -66,13 +66,16 @@ compile_normal_app(AppInfo) ->
     lr3_comp_util:copy_beam_files(AppInfo, OutDir),
     code:add_patha(lr3_comp_util:out_dir(rebar_app_info:dir(AppInfo))).
 
+-spec config(file:dirname(), list()) -> list().
 config(OutDir, ErlOpts) ->
     [{outdir, OutDir}] ++ ErlOpts ++
         [{i, lr3_comp_util:include_dir()}, return, verbose].
 
+-spec ensure_dir(file:dirname()) -> ok.
 ensure_dir(OutDir) ->
     %% Make sure that ebin/ exists and is on the path
     ok = filelib:ensure_dir(filename:join(OutDir, "dummy.beam")),
     AbsOutDir = filename:absname(OutDir),
     rebar_api:debug("\t\tAdding ~p to path ...", [AbsOutDir]),
-    true = code:add_patha(AbsOutDir).
+    true = code:add_patha(AbsOutDir),
+    ok.
