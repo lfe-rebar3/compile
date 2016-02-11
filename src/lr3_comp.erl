@@ -33,11 +33,10 @@ compile(Source, Target, Config) ->
     end.
 
 compile_dir(Config, FirstFiles, SourceDir, TargetDir) ->
-    ensure_dir(TargetDir),
-    SourceExt = ".lfe",
-    TargetExt = ".beam",
-    rebar_base_compiler:run(Config, FirstFiles, SourceDir, SourceExt, TargetDir,
-                            TargetExt, fun compile/3).
+    lr3_comp_util:ensure_dir(TargetDir),
+    rebar_base_compiler:run(Config, FirstFiles,
+                            SourceDir, ".lfe", TargetDir, ".beam",
+                            fun compile/3).
 
 compile_normal_apps(State) ->
     rebar_api:debug("\tCompiling normal LFE apps ...", []),
@@ -54,7 +53,7 @@ compile_normal_app(AppInfo) ->
     OutDir       = lr3_comp_util:relative_out_dir(AppInfo),
     FirstFiles   = lr3_comp_util:get_first_files(Opts, AppDir),
     ErlOpts      = rebar_opts:erl_opts(Opts),
-    Config       = config(OutDir, ErlOpts),
+    Config       = lr3_comp_util:config(OutDir, ErlOpts),
     rebar_api:debug("\tOtherSrcDirs: ~p", [OtherSrcDirs]),
     rebar_api:debug("\tAppInfoDir: ~p", [AppDir]),
     rebar_api:debug("\tSourceDirs: ~p", [SourceDirs]),
@@ -66,17 +65,3 @@ compile_normal_app(AppInfo) ->
     rebar_api:debug("\tFinished compile.", []),
     lr3_comp_util:copy_beam_files(AppInfo, OutDir),
     code:add_patha(lr3_comp_util:out_dir(rebar_app_info:dir(AppInfo))).
-
--spec config(file:dirname(), list()) -> list().
-config(OutDir, ErlOpts) ->
-    [{outdir, OutDir}] ++ ErlOpts ++
-        [{i, lr3_comp_util:include_dir()}, return, verbose].
-
--spec ensure_dir(file:dirname()) -> ok.
-ensure_dir(OutDir) ->
-    %% Make sure that ebin/ exists and is on the path
-    ok = filelib:ensure_dir(filename:join(OutDir, "dummy.beam")),
-    AbsOutDir = filename:absname(OutDir),
-    rebar_api:debug("\t\tAdding ~p to path ...", [AbsOutDir]),
-    true = code:add_patha(AbsOutDir),
-    ok.

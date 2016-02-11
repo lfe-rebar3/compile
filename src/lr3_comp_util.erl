@@ -1,9 +1,11 @@
 -module(lr3_comp_util).
 
--export([copy_app_src/1,
+-export([config/2,
+         copy_app_src/1,
          copy_beam_files/2,
          out_dir/0, out_dir/1,
          include_dir/0, include_dir/1,
+         ensure_dir/1,
          get_apps/1,
          get_first_files/2,
          get_files/2,
@@ -12,6 +14,11 @@
          target_file/2,
          target_base/2,
          relative/1]).
+
+-spec config(file:dirname(), list()) -> list().
+config(OutDir, ErlOpts) ->
+    [{outdir, OutDir}] ++ ErlOpts ++
+        [{i, lr3_comp_util:include_dir()}, return, verbose].
 
 copy_app_src(AppInfo) ->
     rebar_api:debug("\t\tEntered copy_app_src/1 ...", []),
@@ -61,6 +68,15 @@ include_dir() ->
 
 include_dir(AppDir) ->
     filename:join(AppDir, "include").
+
+-spec ensure_dir(file:dirname()) -> ok.
+ensure_dir(OutDir) ->
+    %% Make sure that ebin/ exists and is on the path
+    ok = filelib:ensure_dir(filename:join(OutDir, "dummy.beam")),
+    AbsOutDir = filename:absname(OutDir),
+    rebar_api:debug("\t\tAdding ~p to path ...", [AbsOutDir]),
+    true = code:add_patha(AbsOutDir),
+    ok.
 
 get_apps(State) ->
     case rebar_state:current_app(State) of
