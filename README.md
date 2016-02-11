@@ -43,8 +43,8 @@ Add the plugin to your ``rebar.config``:
 
 ```erlang
 {plugins, [
-  {'lfe-compile', ".*",
-    {git, "https://github.com/lfe-rebar3/compile.git", {tag, "0.2.1"}}}
+  {'lfe-compile',
+    {git, "https://github.com/lfe-rebar3/compile.git", {tag, "0.3.0"}}}
 ]}.
 ```
 
@@ -54,7 +54,7 @@ your ``rebar.config`` file:
 
 ```erlang
 {provider_hooks, [
-   {pre, [{compile, {lfe, compile}}]}
+   {post, [{compile, {lfe, compile}}]}
   ]}.
 ```
 
