@@ -44,7 +44,7 @@ Add the plugin to your ``rebar.config``:
 ```erlang
 {plugins, [
   {'lfe-compile',
-    {git, "https://github.com/lfe-rebar3/compile.git", {tag, "0.4.0"}}}
+    {git, "https://github.com/lfe-rebar3/compile.git", {tag, "0.3.0"}}}
 ]}.
 ```
 
