@@ -50,7 +50,8 @@ compile_normal_app(AppInfo) ->
     AppDir       = rebar_app_info:dir(AppInfo),
     OtherSrcDirs = rebar_dir:src_dirs(Opts),
     SourceDirs   = lr3_comp_util:get_src_dirs(AppDir, ["src"] ++ OtherSrcDirs),
-    OutDir       = lr3_comp_util:relative_out_dir(AppInfo),
+    OutDir       = filename:join([rebar_app_info:out_dir(AppInfo),
+                                  "ebin"]),
     FirstFiles   = lr3_comp_util:get_first_files(Opts, AppDir),
     ErlOpts      = rebar_opts:erl_opts(Opts),
     Config       = lr3_comp_util:config(OutDir, ErlOpts),
@@ -63,5 +64,4 @@ compile_normal_app(AppInfo) ->
     CompileDir = fun(Dir) -> compile_dir(Config, FirstFiles, Dir, OutDir) end,
     lists:foreach(CompileDir, SourceDirs),
     rebar_api:debug("\tFinished compile.", []),
-    lr3_comp_util:copy_beam_files(AppInfo, OutDir),
     code:add_patha(lr3_comp_util:out_dir(rebar_app_info:dir(AppInfo))).

@@ -22,7 +22,7 @@ config(OutDir, ErlOpts) ->
 
 copy_app_src(AppInfo) ->
     rebar_api:debug("\t\tEntered copy_app_src/1 ...", []),
-    AppDir = rebar_app_info:dir(AppInfo),
+    AppDir = rebar_app_info:out_dir(AppInfo),
     AppSrcFile = rebar_app_info:app_file_src(AppInfo),
     AppFile = rebar_app_utils:app_src_to_app(AppDir, AppSrcFile),
     rebar_api:debug("\t\tAppDir: ~p", [AppDir]),
