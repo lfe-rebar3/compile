@@ -4,7 +4,7 @@
 %% Copyright (c) 2016, Eric Bailey <eric@ericb.me>
 %%
 
--module('lfe-compile').
+-module(rebar3_lfe_compile).
 
 -behaviour(provider).
 

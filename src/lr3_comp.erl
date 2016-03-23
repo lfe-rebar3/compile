@@ -28,7 +28,7 @@ compile(Source, Target, Config) ->
             ok;
         {ok, _Mod, Ws} ->
             rebar_base_compiler:ok_tuple(Source, Ws);
-        {error, Es, Ws} ->
+        {error, [{error, Es, Ws}|_], _Es, _Ws} ->
             rebar_base_compiler:error_tuple(Source, Es, Ws, Config)
     end.
 
