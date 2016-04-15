@@ -1,11 +1,14 @@
 {application, 'lfe-compile',
  [{description, "The LFE rebar3 compiler plugin"},
-  {vsn, "0.4.0"},
+  {vsn, "0.4.3"},
+
   {registered, []},
-  {applications,
-   [kernel,
-    stdlib
-   ]},
+  {applications, [kernel, stdlib]},
   {env,[]},
-  {modules, []}
+  {modules, []},
+
+  {pkg_name, rebar3_lfe_compile},
+  {maintainers, ["Duncan McGreggor", "Eric Bailey"]},
+  {licenses, ["BSD"]},
+  {links, [{"GitHub", "https://github.com/lfe-rebar3/compile"}]}
  ]}.
