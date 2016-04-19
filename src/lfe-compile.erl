@@ -3,8 +3,7 @@
 %% Copyright (c) 2014, 2015 Duncan McGreggor <oubiwann@gmail.com>
 %% Copyright (c) 2016, Eric Bailey <eric@ericb.me>
 %%
-
--module(rebar3_lfe_compile).
+-module('lfe-compile').
 
 -behaviour(provider).
 
