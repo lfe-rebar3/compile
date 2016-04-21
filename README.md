@@ -1,5 +1,10 @@
 # lfe-compile
 
+[![Hex.pm][hex badge]][hex package]
+
+[hex badge]: https://img.shields.io/hexpm/v/rebar3_lfe_compile.svg?maxAge=2592000
+[hex package]: https://hex.pm/packages/rebar3_lfe_compile
+
 *The LFE rebar3 compiler plugin*
 
 [lr3-logo]: resources/images/logo.png
