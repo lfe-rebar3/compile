@@ -1,9 +1,12 @@
 # lfe-compile
 
 [![Hex.pm][hex badge]][hex package]
+[![Build Status][travis badge]][travis]
 
 [hex badge]: https://img.shields.io/hexpm/v/rebar3_lfe_compile.svg?maxAge=2592000
 [hex package]: https://hex.pm/packages/rebar3_lfe_compile
+[travis badge]: https://travis-ci.org/lfe-rebar3/compile.svg
+[travis]: https://travis-ci.org/lfe-rebar3/compile
 
 *The LFE rebar3 compiler plugin*
 
