@@ -22,13 +22,16 @@ one.
 
 Note that the LFE rebar3 plugins are not intended to be used as projects or
 tools in their own right -- they need to be incorporated into another project.
-You can add any LFE rebar3 plug to your project, of course, but the intend is
-for a new tool to wrap all of them. This tool is simply called
-[ltool](https://github.com/lfe-rebar3/ltool). The hope is that it will replace
-all the functionality that currently is built into lfetool.
+You can add any LFE rebar3 plugin to your project, of course, but the intent is
+for a new tool to wrap all of them. This tool is simply called [ltool][]. The
+hope is that it will replace all the functionality that currently is built into
+[lfetool][].
 
 If you would like to use this plugin in your own project, without a wrapping
-tool, see the "Use" section below.
+tool, see the [Use](#use-) section below.
+
+[ltool]: https://github.com/lfe-rebar3/ltool
+[lfetool]: https://github.com/lfex/lfetool
 
 ## Build [&#x219F;](#contents)
 
@@ -68,7 +71,7 @@ This will first download and build all your project dependencies, then compile
 all Erlang-related files your project may have, and finally it will compile the
 ``.lfe`` files in your project.
 
-If you would just like to to compile the ``.lfe`` files, you can use the
+If you would just like to compile the ``.lfe`` files, you can use the
 following command:
 
 ```bash
