@@ -1,1 +1,4 @@
-[{<<"lfe">>,{pkg,<<"lfe">>,<<"1.0.2">>},0}].
+[{<<"lfe">>,
+  {git,"https://github.com/rvirding/lfe.git",
+       {ref,"cd96efc3d2a73ecff7f3e2ef3563b73b098e4844"}},
+  0}].
