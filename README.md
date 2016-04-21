@@ -50,18 +50,22 @@ $ rebar3 compile
 
 ## Use [&#x219F;](#contents)
 
-Add the plugin to your ``rebar.config``:
+To use this plugin, simply add it to your ``rebar.config``. This can be done in one of two ways (but not both!):
+
+For use with ``rebar3`` and Github repos:
 
 ```erlang
 {plugins, [
-   %% git:
    {'lfe-compile',
-    {git, "https://github.com/lfe-rebar3/compile.git", {tag, "0.4.0"}}}
+    {git, "https://github.com/lfe-rebar3/compile.git", {tag, "0.4.1"}}}
+ ]}.
+```
 
-   %% hex:
-   {lfe-compile, "0.4.3", {pkg, rebar3_lfe_compile}}
+For use with ``rebar3`` and hex.pm packages:
 
-   %% not both!
+```erlang
+{plugins, [
+   {lfe-compile, "0.4.1", {pkg, rebar3_lfe_compile}}
  ]}.
 ```
 
