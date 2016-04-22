@@ -65,7 +65,7 @@ For use with ``rebar3`` and hex.pm packages:
 
 ```erlang
 {plugins, [
-   {lfe-compile, "0.4.1", {pkg, rebar3_lfe_compile}}
+   {'lfe-compile', "0.4.1", {pkg, rebar3_lfe_compile}}
  ]}.
 ```
 
