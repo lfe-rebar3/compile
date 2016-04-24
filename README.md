@@ -43,8 +43,10 @@ Add the plugin to your ``rebar.config``:
 
 ```erlang
 {plugins, [
-  rebar3_lfe_compile
-]}.
+   {'lfe-compile',
+    {git, "git://github.com/lfe-rebar3/compile.git",
+     {tag, "0.4.0"}}}
+  ]}.
 ```
 
 Then let ``rebar3`` know that you want to call ``lfe compile`` after the
