@@ -45,7 +45,7 @@ Add the plugin to your ``rebar.config``:
 {plugins, [
    {'lfe-compile',
     {git, "git://github.com/lfe-rebar3/compile.git",
-     {tag, "0.4.0"}}}
+     {tag, "0.5.0"}}}
   ]}.
 ```
 
