@@ -18,7 +18,7 @@
 compile(Source, Target, Config) ->
     rebar_api:console(" ~~~~> \tCompiling ~s ...",
                       [lr3_comp_util:relative(Source)]),
-    rebar_api:debug("\t\tCompiling~n\t\t\t~p~n\t\t\tto ~p ...",
+    rebar_api:debug("\t\tCompiling~n\t\t\t~s~n\t\t\tto ~s ...",
                     [Source, Target]),
     rebar_api:debug("\t\tConfig: ~p", [Config]),
     CompileResults = lfe_comp:file(Source, Config),
