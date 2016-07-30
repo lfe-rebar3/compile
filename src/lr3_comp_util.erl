@@ -10,10 +10,15 @@
          get_src_dirs/2,
          relative/1]).
 
--spec config(file:dirname(), list()) -> list().
-config(OutDir, ErlOpts) ->
-    [{outdir, OutDir}] ++ ErlOpts ++
-        [{i, lr3_comp_util:include_dir()}, return, verbose].
+-spec config(file:dirname(), dict:dict()) -> dict:dict().
+config(OutDir, Config) ->
+    Key      = lfe_opts,
+    Defaults = [{outdir, OutDir}] ++ rebar_opts:erl_opts(Config) ++
+        [{i, include_dir()}, return, verbose],
+    case dict:is_key(Key, Config) of
+        true  -> dict:append_list(Key, Defaults, Config);
+        false -> dict:store(Key, Defaults, Config)
+    end.
 
 copy_app_src(AppInfo) ->
     rebar_api:debug("\t\tEntered copy_app_src/1 ...", []),
