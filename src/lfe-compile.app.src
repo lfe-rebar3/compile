@@ -2,10 +2,16 @@
  [{description, "The LFE rebar3 compiler plugin"},
   {vsn, "0.5.0"},
   {registered, []},
-  {applications,
-   [kernel,
-    stdlib
-   ]},
+  {applications, [kernel, stdlib, lfe]},
   {env,[]},
-  {modules, []}
+  {modules, ['lfe-compile', lr3_comp, lr3_comp_util]},
+
+  {pkg_name, rebar3_lfe_compile},
+  {maintainers, ["Duncan McGreggor", "Eric Bailey"]},
+  {licenses, ["BSD-3"]},
+  {links,
+   [{"GitHub", "https://github.com/lfe-rebar3/compile"},
+    {"Blog post",
+     "http://blog.lfe.io/tutorials/2016/03/25/0858-lfe-and-rebar3/"}
+   ]}
  ]}.
