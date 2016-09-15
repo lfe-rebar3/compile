@@ -1,4 +1,6 @@
-[{<<"lfe">>,
-  {git,"https://github.com/rvirding/lfe.git",
-       {ref,"697e9b4996fa843f4c6a9edea25005d30a9b8a14"}},
-  0}].
+{"1.1.0",
+[{<<"lfe">>,{pkg,<<"lfe">>,<<"1.1.1">>},0}]}.
+[
+{pkg_hash,[
+ {<<"lfe">>, <<"F57D2D705AB239CE171318DD31F4E374558266A88E1435F91045C1E8A2965D9C">>}]}
+].
