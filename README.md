@@ -96,3 +96,9 @@ following command:
 $ rebar3 lfe compile
 ...
 ```
+
+For a more detailed description of how to use the [rebar3 LFE plugins][org],
+refer to this [blog post]. Note that the version numbers in the post are
+outdated now, but the general ideas are still valid.
+
+[blog post]: http://blog.lfe.io/tutorials/2016/03/25/0858-lfe-and-rebar3/
