@@ -10,7 +10,7 @@
          get_src_dirs/2,
          relative/1]).
 
--spec config(file:dirname(), dict:dict()) -> dict:dict().
+%% -spec config(file:dirname(), dict:dict()) -> dict:dict().
 config(OutDir, Config) ->
     Key      = lfe_opts,
     Defaults = [{outdir, OutDir}] ++ rebar_opts:erl_opts(Config) ++
