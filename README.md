@@ -46,11 +46,21 @@ $ rebar3 compile
 
 Add the plugin to your ``rebar.config``:
 
+Via ``git``:
+
 ```erlang
 {plugins, [
    {'lfe-compile',
     {git, "git://github.com/lfe-rebar3/compile.git",
-     {tag, "0.5.0"}}}
+     {tag, "0.6.0"}}}
+  ]}.
+```
+
+Via [Hex][hex package]:
+
+```erlang
+{plugins, [
+   {'lfe-compile', "0.6.0", {pkg, rebar3_lfe_compile}}
   ]}.
 ```
 
