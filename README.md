@@ -21,19 +21,23 @@
 
 ## About [&#x219F;](#contents)
 
-Of all the rebar3 plugins for LFE, this one is the most important (it's also
-the only one not written in LFE itself). All other LFE plugins depend upon this
-one.
+Of all the [rebar3 plugins for LFE][org], this one is the most important (it's
+also the only one not written in LFE itself). All other [LFE plugins][org]
+depend upon this one.
 
-Note that the LFE rebar3 plugins are not intended to be used as projects or
-tools in their own right -- they need to be incorporated into another project.
-You can add any LFE rebar3 plug to your project, of course, but the intend is
-for a new tool to wrap all of them. This tool is simply called
-[ltool](https://github.com/lfe-rebar3/ltool). The hope is that it will replace
-all the functionality that currently is built into lfetool.
+Note that the [LFE rebar3 plugins][org] are not intended to be used as projects
+or tools in their own right -- they need to be incorporated into another
+project. You can add any [LFE rebar3 plugin][org] to your project, of course,
+but the intent is for a new tool to wrap all of them. This tool is simply called
+[ltool]. The hope is that it will replace all the functionality that currently
+is built into [lfetool].
 
 If you would like to use this plugin in your own project, without a wrapping
-tool, see the "Use" section below.
+tool, see the ["Use"](#use-) section below.
+
+[org]: https://github.com/lfe-rebar3
+[ltool]: https://github.com/lfe-rebar3/ltool
+[lfetool]: https://github.com/lfex/lfetool
 
 ## Build [&#x219F;](#contents)
 
