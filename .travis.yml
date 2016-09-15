@@ -1,11 +1,12 @@
 language: erlang
 install: true
 before_script:
-    - wget https://s3.amazonaws.com/rebar3/rebar3
-    - chmod +x rebar3
+  - wget https://s3.amazonaws.com/rebar3/rebar3
+  - chmod +x rebar3
 env: PATH=".:$PATH"
 script: rebar3 compile
 otp_release:
+  - 19.0
   - 18.3
   - 18.0
   - 17.5

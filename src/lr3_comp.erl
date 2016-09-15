@@ -18,10 +18,11 @@
 compile(Source, Target, Config) ->
     rebar_api:console(" ~~~~> \tCompiling ~s ...",
                       [lr3_comp_util:relative(Source)]),
-    rebar_api:debug("\t\tCompiling~n\t\t\t~p~n\t\t\tto ~p ...",
+    rebar_api:debug("\t\tCompiling~n\t\t\t~s~n\t\t\tto ~s ...",
                     [Source, Target]),
-    rebar_api:debug("\t\tConfig: ~p", [Config]),
-    CompileResults = lfe_comp:file(Source, Config),
+    LfeOpts = dict:fetch(lfe_opts, Config),
+    rebar_api:debug("\t\tConfig: ~p", [LfeOpts]),
+    CompileResults = lfe_comp:file(Source, LfeOpts),
     rebar_api:debug("\tCompile results: ~p", [CompileResults]),
     case CompileResults of
         {ok, _Mod} ->
@@ -54,15 +55,13 @@ compile_normal_app(AppInfo) ->
     SourceDirs   = lr3_comp_util:get_src_dirs(AppDir, ["src"] ++ OtherSrcDirs),
     OutDir       = lr3_comp_util:relative_out_dir(AppInfo),
     FirstFiles   = lr3_comp_util:get_first_files(Opts, AppDir),
-    ErlOpts      = rebar_opts:erl_opts(Opts),
-    Config       = lr3_comp_util:config(OutDir, ErlOpts),
+    Config       = lr3_comp_util:config(OutDir, Opts),
     rebar_api:debug("\tOtherSrcDirs: ~p", [OtherSrcDirs]),
     rebar_api:debug("\tAppInfoDir: ~p", [AppDir]),
     rebar_api:debug("\tSourceDirs: ~p", [SourceDirs]),
     rebar_api:debug("\tOutDir: ~p", [OutDir]),
     rebar_api:debug("\tFirstFiles: ~p", [FirstFiles]),
-    rebar_api:debug("\tErlOpts: ~p", [ErlOpts]),
-    CompileDir = fun(Dir) -> compile_dir(Config, FirstFiles, Dir, OutDir) end,
-    lists:foreach(CompileDir, SourceDirs),
+    rebar_api:debug("\tConfig: ~p", [dict:fetch(lfe_opts, Config)]),
+    [compile_dir(Config, FirstFiles, Dir, OutDir) || Dir <- SourceDirs],
     rebar_api:debug("\tFinished compile.", []),
     code:add_patha(lr3_comp_util:out_dir(rebar_app_info:dir(AppInfo))).
