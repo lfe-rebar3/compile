@@ -56,7 +56,7 @@ Via ``git``:
 {plugins, [
    {'lfe-compile',
     {git, "git://github.com/lfe-rebar3/compile.git",
-     {tag, "0.6.0"}}}
+     {tag, "0.7.0"}}}
   ]}.
 ```
 
@@ -64,7 +64,7 @@ Via [Hex][hex package]:
 
 ```erlang
 {plugins, [
-   {'lfe-compile', "0.6.0", {pkg, rebar3_lfe_compile}}
+   {'lfe-compile', "0.7.0", {pkg, rebar3_lfe_compile}}
   ]}.
 ```
 
