@@ -104,7 +104,7 @@ outdated now, but the general ideas are still valid.
 
 <!-- Named page links below: /-->
 
-[lr3-logo]: resources/images/logo.png
+[lr3-logo]: priv/images/logo.png
 [org]: https://github.com/lfe-rebar3
 [github]: https://github.com/lfe-rebar3/compile
 [gitlab]: https://gitlab.com/lfe-rebar3/compile
