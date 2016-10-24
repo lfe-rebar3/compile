@@ -5,12 +5,13 @@
   {applications, [kernel, stdlib, lfe]},
   {env,[]},
   {modules, ['lfe-compile', lr3_comp, lr3_comp_util]},
-
   {pkg_name, rebar3_lfe_compile},
   {maintainers, ["Duncan McGreggor"]},
   {licenses, ["BSD-3"]},
   {links,
    [{"GitHub", "https://github.com/lfe-rebar3/compile"},
+    {"Gitlab", "https://gitlab.com/lfe-rebar3/compile"},
+    {"Hex", "https://hex.pm/packages/rebar3_lfe_compile"},
     {"Blog post",
      "http://blog.lfe.io/tutorials/2016/03/25/0858-lfe-and-rebar3/"}
    ]}
