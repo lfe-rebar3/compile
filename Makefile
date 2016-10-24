@@ -13,3 +13,6 @@ push-tags:
 	git push gitlab --tags
 
 push-all: push push-tags
+
+publish:
+	rebar3 as hex hexpm publish
