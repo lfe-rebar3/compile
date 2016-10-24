@@ -8,6 +8,8 @@ push:
 	git push github master
 	git push gitlab master
 
-push-all: push
+push-tags:
 	git push github --tags
 	git push gitlab --tags
+
+push-all: push push-tags
