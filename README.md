@@ -1,6 +1,6 @@
 # lfe-compile
 
-[![Hex.pm][hex badge]][hex package]
+[![Hex.pm][hex badge]][hex package] [![Downloads][hex downloads][hex package]
 
 *The LFE rebar3 compiler plugin*
 
@@ -113,3 +113,4 @@ outdated now, but the general ideas are still valid.
 [blog post]: http://blog.lfe.io/tutorials/2016/03/25/0858-lfe-and-rebar3/
 [hex badge]: https://img.shields.io/hexpm/v/rebar3_lfe_compile.svg?maxAge=2592000
 [hex package]: https://hex.pm/packages/rebar3_lfe_compile
+[hex downloads]: https://img.shields.io/hexpm/dt/rebar3_lfe_compile.svg
