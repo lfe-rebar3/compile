@@ -1,10 +1,11 @@
 {application, 'lfe-compile',
  [{description, "The LFE rebar3 compiler plugin"},
-  {vsn, "0.8.0-rc2"},
+  {vsn, "0.8.0-rc1"},
   {registered, []},
   {applications, [kernel, stdlib, lfe]},
   {env,[]},
   {modules, ['lfe-compile', lr3_comp, lr3_comp_util]},
+  %% Hex.pm metadata
   {pkg_name, rebar3_lfe_compile},
   {maintainers, ["Duncan McGreggor"]},
   {licenses, ["BSD-3"]},
