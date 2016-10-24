@@ -2,12 +2,7 @@
 
 [![Hex.pm][hex badge]][hex package]
 
-[hex badge]: https://img.shields.io/hexpm/v/rebar3_lfe_compile.svg?maxAge=2592000
-[hex package]: https://hex.pm/packages/rebar3_lfe_compile
-
 *The LFE rebar3 compiler plugin*
-
-[lr3-logo]: resources/images/logo.png
 
 [![][lr3-logo]][lr3-logo]
 
@@ -35,9 +30,6 @@ is built into [lfetool].
 If you would like to use this plugin in your own project, without a wrapping
 tool, see the ["Use"](#use-) section below.
 
-[org]: https://github.com/lfe-rebar3
-[ltool]: https://github.com/lfe-rebar3/ltool
-[lfetool]: https://github.com/lfex/lfetool
 
 ## Build [&#x219F;](#contents)
 
@@ -45,12 +37,11 @@ tool, see the ["Use"](#use-) section below.
 $ rebar3 compile
 ```
 
-
 ## Use [&#x219F;](#contents)
 
 Add the plugin to your ``rebar.config``:
 
-Via ``git``:
+Using [GitHub][github]:
 
 ```erlang
 {plugins, [
@@ -60,7 +51,17 @@ Via ``git``:
   ]}.
 ```
 
-Via [Hex][hex package]:
+Using [Gitlab][gitlab]:
+
+```erlang
+{plugins, [
+   {'lfe-compile',
+    {git, "git://gitlab.com/lfe-rebar3/compile.git",
+     {tag, "0.7.0"}}}
+  ]}.
+```
+
+Using [Hex][hex package]:
 
 ```erlang
 {plugins, [
@@ -101,4 +102,14 @@ For a more detailed description of how to use the [rebar3 LFE plugins][org],
 refer to this [blog post]. Note that the version numbers in the post are
 outdated now, but the general ideas are still valid.
 
+ <!-- Named page links below: /-->
+
+[lr3-logo]: resources/images/logo.png
+[org]: https://github.com/lfe-rebar3
+[github]: https://github.com/lfe-rebar3/compile
+[gitlab]: https://github.com/lfe-rebar3/compile
+[ltool]: https://github.com/lfe-rebar3/ltool
+[lfetool]: https://github.com/lfex/lfetool
 [blog post]: http://blog.lfe.io/tutorials/2016/03/25/0858-lfe-and-rebar3/
+[hex badge]: https://img.shields.io/hexpm/v/rebar3_lfe_compile.svg?maxAge=2592000
+[hex package]: https://hex.pm/packages/rebar3_lfe_compile
