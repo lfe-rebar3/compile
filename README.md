@@ -1,6 +1,6 @@
 # lfe-compile
 
-[![Build Status][travis badge]][travis] [![Erlang Versions][erlang badge]] [![Hex.pm][hex badge]][hex package] [![Downloads][hex downloads]][hex package]
+[![Build Status][travis badge]][travis] [erlang badge] [![Hex.pm][hex badge]][hex package] [![Downloads][hex downloads]][hex package]
 
 *The LFE rebar3 compiler plugin*
 
