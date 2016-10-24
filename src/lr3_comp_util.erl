@@ -2,12 +2,13 @@
 
 -export([config/2,
          copy_app_src/1,
-         out_dir/0, out_dir/1, relative_out_dir/1,
+         out_dir/0, out_dir/1,
          include_dir/0, include_dir/1,
          ensure_dir/1,
          get_apps/1,
          get_first_files/2,
          get_src_dirs/2,
+         relative_out_dir/1,
          relative/1]).
 
 %% -spec config(file:dirname(), dict:dict()) -> dict:dict().
@@ -22,9 +23,9 @@ config(OutDir, Config) ->
 
 copy_app_src(AppInfo) ->
     rebar_api:debug("\t\tEntered copy_app_src/1 ...", []),
-    AppOutDir  = rebar_app_info:out_dir(AppInfo),
+    AppOutDir = rebar_app_info:out_dir(AppInfo),
     AppSrcFile = rebar_app_info:app_file_src(AppInfo),
-    AppFile    = rebar_app_utils:app_src_to_app(AppOutDir, AppSrcFile),
+    AppFile = rebar_app_utils:app_src_to_app(AppOutDir, AppSrcFile),
     rebar_api:debug("\t\tAppOutDir: ~p", [AppOutDir]),
     rebar_api:debug("\t\tAppSrcFile: ~p", [AppSrcFile]),
     rebar_api:debug("\t\tAppFile: ~p", [AppFile]),
@@ -39,12 +40,20 @@ copy_file(Src, Dst) ->
             rebar_api:error("\t\tFailed to copy ~p: ~p", [Src, Reason])
     end.
 
-out_dir()                 -> "ebin".
-out_dir(AppDir)           -> filename:join(AppDir, "ebin").
-relative_out_dir(AppInfo) -> out_dir(rebar_app_info:out_dir(AppInfo)).
+out_dir() ->
+    "ebin".
 
-include_dir()             -> "include".
-include_dir(AppDir)       -> filename:join(AppDir, "include").
+out_dir(AppDir) ->
+    filename:join(AppDir, "ebin").
+
+relative_out_dir(AppInfo) ->
+    filename:join(rebar_app_info:out_dir(AppInfo), "ebin").
+
+include_dir() ->
+    "include".
+
+include_dir(AppDir) ->
+    filename:join(AppDir, "include").
 
 -spec ensure_dir(file:dirname()) -> ok.
 ensure_dir(OutDir) ->
@@ -57,12 +66,12 @@ ensure_dir(OutDir) ->
 
 get_apps(State) ->
     case rebar_state:current_app(State) of
-        undefined ->
-            rebar_api:debug("\tCurrent app state is undefined ...", []),
-            rebar_state:project_apps(State);
-        AppInfo ->
-            rebar_api:debug("\tConverting current app state to list ...", []),
-            [AppInfo]
+           undefined ->
+             rebar_api:debug("\tCurrent app state is undefined ...", []),
+             rebar_state:project_apps(State);
+           AppInfo ->
+             rebar_api:debug("\tConverting current app state to list ...", []),
+             [AppInfo]
     end.
 
 get_first_files(Opts, AppDir) ->
