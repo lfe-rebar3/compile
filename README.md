@@ -1,6 +1,6 @@
 # lfe-compile
 
-[![Hex.pm][hex badge]][hex package] [![Downloads][hex downloads][hex package]
+[![Hex.pm][hex badge]][hex package] [![Downloads][hex downloads]][hex package]
 
 *The LFE rebar3 compiler plugin*
 
