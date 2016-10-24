@@ -11,6 +11,9 @@
          relative_out_dir/1,
          relative/1]).
 
+%% The following spec was commented out in this commit:
+%% * https://github.com/lfe-rebar3/compile/commit/cde13fdceec399c36635fe259074b7a01fcf3430
+%% See the commit message for more information.
 %% -spec config(file:dirname(), dict:dict()) -> dict:dict().
 config(OutDir, Config) ->
     Key      = lfe_opts,
