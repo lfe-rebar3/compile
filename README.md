@@ -1,6 +1,6 @@
 # lfe-compile
 
-[![Build Status][travis badge]][travis] [erlang badge] [![Hex.pm][hex badge]][hex package] [![Downloads][hex downloads]][hex package]
+[![Build Status][travis badge]][travis] [erlang badge] [![Tags][Github tags badge]][github tags] [![Hex.pm][hex badge]][hex package] [![Downloads][hex downloads]][hex package]
 
 *The LFE rebar3 compiler plugin*
 
@@ -109,8 +109,11 @@ outdated now, but the general ideas are still valid.
 [github]: https://github.com/lfe-rebar3/compile
 [gitlab]: https://gitlab.com/lfe-rebar3/compile
 [travis]: https://travis-ci.org/lfe-rebar3/compile
-[erlang badge]: https://img.shields.io/badge/Erlang-R15%20to%2019.1-blue.svg
 [travis badge]: https://img.shields.io/travis/lfe-rebar3/compile.svg
+[erlang badge]: https://img.shields.io/badge/Erlang-R15%20to%2019.1-blue.svg
+[github tags]: https://github.com/lfe-rebar3/compile/tags
+[github tags badge]: https://img.shields.io/github/tag/lfe-rebar3/compile.svg
+[github downloads]: https://img.shields.io/github/downloads/atom/atom/total.svg
 [hex badge]: https://img.shields.io/hexpm/v/rebar3_lfe_compile.svg?maxAge=2592000
 [hex package]: https://hex.pm/packages/rebar3_lfe_compile
 [hex downloads]: https://img.shields.io/hexpm/dt/rebar3_lfe_compile.svg
