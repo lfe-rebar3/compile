@@ -102,7 +102,7 @@ For a more detailed description of how to use the [rebar3 LFE plugins][org],
 refer to this [blog post]. Note that the version numbers in the post are
 outdated now, but the general ideas are still valid.
 
- <!-- Named page links below: /-->
+<!-- Named page links below: /-->
 
 [lr3-logo]: resources/images/logo.png
 [org]: https://github.com/lfe-rebar3
