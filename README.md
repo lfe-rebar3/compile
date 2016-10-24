@@ -47,7 +47,7 @@ Using [GitHub][github]:
 {plugins, [
    {'lfe-compile',
     {git, "git://github.com/lfe-rebar3/compile.git",
-     {tag, "0.7.0"}}}
+      {tag, "0.7.0"}}}
   ]}.
 ```
 
@@ -57,7 +57,7 @@ Using [Gitlab][gitlab]:
 {plugins, [
    {'lfe-compile',
     {git, "git://gitlab.com/lfe-rebar3/compile.git",
-     {tag, "0.7.0"}}}
+      {tag, "0.7.0"}}}
   ]}.
 ```
 
