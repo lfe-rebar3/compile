@@ -16,7 +16,7 @@
 %% See the commit message for more information.
 %% -spec config(file:dirname(), dict:dict()) -> dict:dict().
 config(OutDir, Config) ->
-    Key      = lfe_opts,
+    Key = lfe_opts,
     Defaults = [{outdir, OutDir}] ++ rebar_opts:erl_opts(Config) ++
         [{i, include_dir()}, return, verbose],
     case dict:is_key(Key, Config) of

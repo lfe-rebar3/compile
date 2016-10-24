@@ -1,6 +1,6 @@
 %% Copyright (c) 2009, Dave Smith <dizzyd@dizzyd.com> &
 %%                     Tim Dysinger <tim@dysinger.net>
-%% Copyright (c) 2014, 2015 Duncan McGreggor <oubiwann@gmail.com>
+%% Copyright (c) 2014-2016 Duncan McGreggor <oubiwann@gmail.com>
 %% Copyright (c) 2016, Eric Bailey <eric@ericb.me>
 %%
 -module('lfe-compile').
@@ -58,10 +58,10 @@ format_error(Reason) ->
 -spec info(string()) -> iolist().
 info(Description) ->
     io_lib:format(
-      "~n~s~n"
-      "~n"
-      "No additional configuration options are required to compile~n"
-      "LFE (*.lfe) files. The rebar 'erl_opts' setting is reused by~n"
-      "LFE. For more information, see the rebar documentation for~n"
-      "'erl_opts'.~n",
-      [Description]).
+        "~n~s~n"
+        "~n"
+        "No additional configuration options are required to compile~n"
+        "LFE (*.lfe) files. The rebar 'erl_opts' setting is reused by~n"
+        "LFE. For more information, see the rebar documentation for~n"
+        "'erl_opts'.~n",
+        [Description]).
