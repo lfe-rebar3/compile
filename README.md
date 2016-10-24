@@ -107,7 +107,7 @@ outdated now, but the general ideas are still valid.
 [lr3-logo]: resources/images/logo.png
 [org]: https://github.com/lfe-rebar3
 [github]: https://github.com/lfe-rebar3/compile
-[gitlab]: https://github.com/lfe-rebar3/compile
+[gitlab]: https://gitlab.com/lfe-rebar3/compile
 [ltool]: https://github.com/lfe-rebar3/ltool
 [lfetool]: https://github.com/lfex/lfetool
 [blog post]: http://blog.lfe.io/tutorials/2016/03/25/0858-lfe-and-rebar3/
