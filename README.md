@@ -1,6 +1,6 @@
 # lfe-compile
 
-[![Build Status][travis badge]][travis] [![Erlang versions][erlang badge]][versions] [![Tags][Github tags badge]][github tags] [![Downloads][hex downloads]][hex package]
+[![Build Status][travis badge]][travis] [![LFE Versions][lfe badge]][lfe] [![Erlang Versions][erlang badge]][versions] [![Tags][github tags badge]][github tags] [![Downloads][hex downloads]][hex package]
 
 *The LFE rebar3 compiler plugin*
 
@@ -110,7 +110,9 @@ outdated now, but the general ideas are still valid.
 [gitlab]: https://gitlab.com/lfe-rebar3/compile
 [travis]: https://travis-ci.org/lfe-rebar3/compile
 [travis badge]: https://img.shields.io/travis/lfe-rebar3/compile.svg
-[erlang badge]: https://img.shields.io/badge/Erlang-R15%20to%2019.1-blue.svg
+[lfe]: https://github.com/rvirding/lfe
+[lfe badge]: https://img.shields.io/badge/lfe-1.2.0-blue.svg
+[erlang badge]: https://img.shields.io/badge/erlang-R15%20to%2019.1-blue.svg
 [versions]: https://github.com/lfe-rebar3/compile/blob/master/.travis.yml
 [github tags]: https://github.com/lfe-rebar3/compile/tags
 [github tags badge]: https://img.shields.io/github/tag/lfe-rebar3/compile.svg
