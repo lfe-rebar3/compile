@@ -15,4 +15,4 @@ push-tags:
 push-all: push push-tags
 
 publish:
-	rebar3 as hex hexpm publish
+	rebar3 as hexpm hex publish
