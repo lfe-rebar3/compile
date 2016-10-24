@@ -7,7 +7,7 @@
   {modules, ['lfe-compile', lr3_comp, lr3_comp_util]},
 
   {pkg_name, rebar3_lfe_compile},
-  {maintainers, ["Duncan McGreggor", "Eric Bailey"]},
+  {maintainers, ["Duncan McGreggor"]},
   {licenses, ["BSD-3"]},
   {links,
    [{"GitHub", "https://github.com/lfe-rebar3/compile"},
