@@ -6,7 +6,7 @@ before_script:
 env: PATH=".:$PATH"
 script: rebar3 compile
 otp_release:
-  - 19.0
+  - 19.1
   - 18.3
   - 18.0
   - 17.5
