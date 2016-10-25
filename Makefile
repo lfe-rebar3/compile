@@ -14,9 +14,6 @@ push-tags:
 
 push-all: push push-tags
 
-publish:
-	rebar3 as hexpm hex publish
-
 build-github: clean
 	rebar3 compile
 
@@ -27,3 +24,7 @@ build-hexpm: clean
 	rebar3 as hexpm compile
 
 build-all: build-github build-gitlab build-hexpm
+
+publish:
+	rebar3 as hexpm hex publish
+
