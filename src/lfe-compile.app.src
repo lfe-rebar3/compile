@@ -1,6 +1,6 @@
 {application, 'lfe-compile',
  [{description, "The LFE rebar3 compiler plugin"},
-  {vsn, "0.8.0-rc1"},
+  {vsn, "0.8.0-rc2"},
   {registered, []},
   {applications, [kernel, stdlib, lfe]},
   {env,[]},
