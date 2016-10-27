@@ -33,8 +33,10 @@ init(State) ->
                                  {desc,       info(?DESC)},
                                  {opts,       []}]),
     State1 = rebar_state:add_provider(State, Provider),
+    TestRegex = "^[^._].*\\.(erl|lfe)\$",
+    State2 = rebar_state:set(State1, eunit_test_regex, TestRegex),
     rebar_api:debug("Initialized {lfe, compile} ...", []),
-    {ok, State1}.
+    {ok, State2}.
 
 -spec do(rebar_state:t()) -> {ok, rebar_state:t()} | {error, string()}.
 do(State) ->
