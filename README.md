@@ -111,8 +111,8 @@ outdated now, but the general ideas are still valid.
 [travis]: https://travis-ci.org/lfe-rebar3/compile
 [travis badge]: https://img.shields.io/travis/lfe-rebar3/compile.svg
 [lfe]: https://github.com/rvirding/lfe
-[lfe badge]: https://img.shields.io/badge/lfe-1.2.0-blue.svg
-[erlang badge]: https://img.shields.io/badge/erlang-R15%20to%2019.1-blue.svg
+[lfe badge]: https://img.shields.io/badge/lfe-1.3.0-blue.svg
+[erlang badge]: https://img.shields.io/badge/erlang-17.5%20to%2022.0-blue.svg
 [versions]: https://github.com/lfe-rebar3/compile/blob/master/.travis.yml
 [github tags]: https://github.com/lfe-rebar3/compile/tags
 [github tags badge]: https://img.shields.io/github/tag/lfe-rebar3/compile.svg
