@@ -1,3 +1,7 @@
+# DEPRECATED / ARCHIVED
+
+This functionality is now available in the far more streamlined project https://github.com/lfe-rebar3/rebar3_lfe
+
 # lfe-compile
 
 [![Build Status][travis badge]][travis] [![LFE Versions][lfe badge]][lfe] [![Erlang Versions][erlang badge]][versions] [![Tags][github tags badge]][github tags] [![Downloads][hex downloads]][hex package]
